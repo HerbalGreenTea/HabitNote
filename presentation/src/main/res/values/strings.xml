@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">HabitNote</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="habit_title">название привычки</string>
+    <string name="habit_description">описание привычки</string>
+    <string name="habit_count">количество раз</string>
+    <string name="habit_frequency">переодичность</string>
+    <string name="habit_type_good">хорошая</string>
+    <string name="habit_type_bad">плохая</string>
+    <string name="btn_create_habit">создать привычку</string>
+
+    <string name="item_habit_type">тип: </string>
+    <string name="item_habit_priority">приоритет: </string>
+    <string name="item_habit_count">повторений: </string>
+    <string name="item_habit_frequency">переодичность: </string>
+
+    <string name="toast_empty_field_create_habit">заполните поля названия, повторений и переодичиности привычки</string>
+
+    <string name="habit_priority_low">низкий</string>
+    <string name="habit_priority_mid">средний</string>
+    <string name="habit_priority_high">высокий</string>
+
+    <string name="text_day">дня</string>
+    <string name="text_days">дней</string>
+    <string name="one_in">раз в</string>
+    <string name="repeat">повторять </string>
+    <string name="text_priority">приоритетом</string>
+    <string name="text_witch"> с </string>
+
+    <string-array name="habit_priority">
+        <item>низкий</item>
+        <item>средний</item>
+        <item>высокий</item>
+    </string-array>
+
+    <string name="menu_item_description_app">о приложении</string>
+
+</resources>

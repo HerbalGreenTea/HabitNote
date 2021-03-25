@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CreateHabitFragment"
+    android:padding="10dp">
+
+    <EditText
+        style="@style/edit_text_field_create_habit"
+        android:id="@+id/create_habit_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="14dp"
+        android:hint="@string/habit_title"
+        android:maxLength="20"
+        android:background="@drawable/background_field_input_text"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:id="@+id/create_habit_color"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/royalPurple"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_habit_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/create_habit_title"/>
+
+    <EditText
+        style="@style/edit_text_field_create_habit"
+        android:id="@+id/create_habit_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/habit_count"
+        android:maxLength="5"
+        android:background="@drawable/background_field_input_text"
+        android:inputType="number"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/create_habit_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/create_habit_frequency"/>
+
+    <EditText
+        style="@style/edit_text_field_create_habit"
+        android:id="@+id/create_habit_frequency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/habit_frequency"
+        android:maxLength="5"
+        android:background="@drawable/background_field_input_text"
+        android:inputType="number"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/create_habit_title"
+        app:layout_constraintStart_toEndOf="@id/create_habit_count"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <RadioGroup
+        android:id="@+id/create_type_habit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_habit_count"
+        app:layout_constraintEnd_toEndOf="@id/create_habit_count"
+        android:gravity="center"
+        android:background="@drawable/background_field_input_text">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/btn_type_good"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/habit_type_good"
+            android:checked="true"
+            android:buttonTint="@color/royalPurple"
+            android:layout_margin="10dp"/>
+
+        <RadioButton
+            android:id="@+id/btn_type_bad"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/habit_type_bad"
+            android:buttonTint="@color/royalPurple"
+            android:layout_margin="10dp"/>
+
+    </RadioGroup>
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/create_priority_habit"
+        android:layout_marginTop="25dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/habit_priority"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/create_type_habit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/create_type_habit"
+        android:background="@drawable/background_field_input_text"
+        android:padding="10dp"/>
+
+    <EditText
+        style="@style/edit_text_field_create_habit"
+        android:id="@+id/create_description_habit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="10dp"
+        android:hint="@string/habit_description"
+        android:gravity="center_horizontal"
+        android:background="@drawable/background_field_input_text"
+        app:layout_constraintTop_toTopOf="@id/create_type_habit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/create_habit_frequency"
+        app:layout_constraintBottom_toBottomOf="@id/create_priority_habit"/>
+
+    <Button
+        android:id="@+id/btn_create_habit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="@string/btn_create_habit"
+        android:background="@drawable/background_field_input_text"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <HorizontalScrollView
+        android:id="@+id/color_picker"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:scrollbars="none"
+        android:layout_marginTop="70dp"
+        app:layout_constraintTop_toBottomOf="@id/create_priority_habit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RadioGroup
+            android:id="@+id/rg_btn_color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/background_color_picker">
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="15dp"/>
+
+        </RadioGroup>
+
+    </HorizontalScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

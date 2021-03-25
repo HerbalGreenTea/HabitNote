@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="text_view_item_habit">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/royalPurple</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="tv_item_habit">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/electricPurple</item>
+    </style>
+
+    <style name="edit_text_field_create_habit">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/royalPurple</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>
