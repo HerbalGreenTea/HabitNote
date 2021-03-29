@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.data.Habit
 import com.example.data.PriorityHabit
 import com.example.data.TypeHabit
+import com.example.habitnote.ViewModels.Event
 import com.example.habitnote.ViewModels.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_create_habit.*
 import kotlinx.android.synthetic.main.fragment_create_habit.view.*
@@ -54,12 +55,12 @@ class CreateHabitFragment : Fragment() {
                     newHabit.index = habit?.index
 
                     if (newHabit.type != habit?.type && habit != null) {
-                        sharedViewModel.removeHabit.value = habit
+                        sharedViewModel.removeHabit.value = Event(habit)
                     }
 
-                    sharedViewModel.editHabit.value = newHabit
+                    sharedViewModel.editHabit.value = Event(newHabit)
                 } else {
-                    sharedViewModel.createNewHabit.value = createHabit(view)
+                    sharedViewModel.createNewHabit.value = Event(createHabit(view))
                 }
                 findNavController().popBackStack()
             } else {

@@ -10,11 +10,25 @@
         android:name="com.example.habitnote.CreateHabitFragment"
         android:label="fragment_create_habit"
         tools:layout="@layout/fragment_create_habit" />
+
+    <fragment
+        android:id="@+id/descriptionAppFragment"
+        android:name="com.example.habitnote.DescriptionAppFragment"
+        android:label="fragment_description_app"
+        tools:layout="@layout/fragment_description_app" >
+        <action
+            android:id="@+id/action_descriptionAppFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.example.habitnote.MainFragment"
+        android:name="com.example.habitnote.ViewPagerFragment"
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_view_pager" >
+        <action
+            android:id="@+id/action_viewPagerFragment_to_descriptionAppFragment"
+            app:destination="@id/descriptionAppFragment" />
         <action
             android:id="@+id/action_viewPagerFragment_to_createHabitFragment"
             app:destination="@id/createHabitFragment" />

@@ -35,5 +35,6 @@
     </string-array>
 
     <string name="menu_item_description_app">о приложении</string>
+    <string name="menu_item_main_screen">главное</string>
 
 </resources>

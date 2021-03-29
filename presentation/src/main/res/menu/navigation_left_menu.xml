@@ -4,7 +4,11 @@
     <group>
 
         <item
-            android:id="@+id/description_app"
+            android:id="@+id/item_main_screen"
+            android:title="@string/menu_item_main_screen"/>
+
+        <item
+            android:id="@+id/item_description_app"
             android:title="@string/menu_item_description_app"/>
 
     </group>

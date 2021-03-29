@@ -7,9 +7,10 @@ import com.example.data.*
 import com.example.habitnote.R
 import kotlinx.android.synthetic.main.item_habit.view.*
 
-class ListHabitAdapter: RecyclerView.Adapter<ListHabitAdapter.HabitsViewHolder>() {
+class ListHabitAdapter(
+        private var habits: MutableList<Habit>
+): RecyclerView.Adapter<ListHabitAdapter.HabitsViewHolder>() {
 
-    private var habits = mutableListOf<Habit>()
     private var onItemClickListener: OnItemClickListener? = null
 
     class HabitsViewHolder(inflater: LayoutInflater, parent: ViewGroup)
@@ -60,14 +61,8 @@ class ListHabitAdapter: RecyclerView.Adapter<ListHabitAdapter.HabitsViewHolder>(
 
     override fun getItemCount(): Int = habits.size
 
-    fun setData(habits: MutableList<Habit>) {
-        this.habits = habits
-        notifyDataSetChanged()
-    }
-
-    // как привычка добавляется в habits, потому что ссылочный тип?
-    fun addHabit(habit: Habit) {
-        notifyItemChanged(habits.size)
+    fun lastNotifyItemChanged() {
+        notifyItemChanged(this.habits.size - 1)
     }
 
     fun updateHabit(habit: Habit) {
