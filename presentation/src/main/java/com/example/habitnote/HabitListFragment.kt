@@ -31,8 +31,6 @@ class HabitListFragment : Fragment() {
         }
     }
 
-    private lateinit var habitsAdpater: ListHabitAdapter
-
     private val habitsViewModel: ListHabitViewModel by lazy {
         ViewModelProvider(requireActivity()).get(ListHabitViewModel::class.java)
     }
@@ -41,12 +39,16 @@ class HabitListFragment : Fragment() {
         ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
     }
 
+    private var viewFragment: View? = null
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_habit_list, container, false)
 
-        return view
+        if (viewFragment == null)
+            viewFragment = inflater.inflate(R.layout.fragment_habit_list, container, false)
+
+        return viewFragment
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +56,7 @@ class HabitListFragment : Fragment() {
 
         val type = TypeHabit.getTypeAtCode(arguments?.getInt(TYPE_HABIT) ?: 0)
 
-        habitsAdpater = ListHabitAdapter(
+        view.rv_habits.adapter = ListHabitAdapter(
                 if (type == TypeHabit.GOOD) habitsViewModel.getGoodHabits()
                 else habitsViewModel.getBadHabits()
         ).apply {
@@ -83,8 +85,7 @@ class HabitListFragment : Fragment() {
                 if (type == it.peekContent().type) {
                     val habit = it.getContentIfNotHandled()
                     if (habit != null) {
-                        val newHabit = habitsViewModel.addHabit(habit)
-                        updateHabit(newHabit)
+                        updateHabit(habit)
                     }
                 }
             }
@@ -98,22 +99,6 @@ class HabitListFragment : Fragment() {
                     findNavController().navigate(R.id.createHabitFragment, bundle)
                 }
             })
-        }
-
-        view.rv_habits.adapter = when {
-            (habitsViewModel.goodHabitsAdapter != null && type == TypeHabit.GOOD) ->
-                habitsViewModel.goodHabitsAdapter
-            (habitsViewModel.badHabitsAdapter != null && type == TypeHabit.BAD) ->
-                habitsViewModel.badHabitsAdapter
-            (habitsViewModel.goodHabitsAdapter == null && type == TypeHabit.GOOD) -> {
-                habitsViewModel.goodHabitsAdapter = habitsAdpater
-                habitsViewModel.goodHabitsAdapter
-            }
-            (habitsViewModel.badHabitsAdapter == null && type == TypeHabit.BAD) -> {
-                habitsViewModel.badHabitsAdapter = habitsAdpater
-                habitsViewModel.badHabitsAdapter
-            }
-            else -> null
         }
     }
 }

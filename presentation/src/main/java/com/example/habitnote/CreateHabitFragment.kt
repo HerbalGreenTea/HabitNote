@@ -23,7 +23,9 @@ import kotlinx.android.synthetic.main.fragment_create_habit.view.*
 
 class CreateHabitFragment : Fragment() {
 
-    private lateinit var sharedViewModel: SharedViewModel
+    private val  sharedViewModel: SharedViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,8 +34,6 @@ class CreateHabitFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_create_habit, container, false)
 
         createColorPicker(view)
-
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         return view
     }
@@ -56,9 +56,10 @@ class CreateHabitFragment : Fragment() {
 
                     if (newHabit.type != habit?.type && habit != null) {
                         sharedViewModel.removeHabit.value = Event(habit)
+                        sharedViewModel.createNewHabit.value = Event(newHabit)
+                    } else {
+                        sharedViewModel.editHabit.value = Event(newHabit)
                     }
-
-                    sharedViewModel.editHabit.value = Event(newHabit)
                 } else {
                     sharedViewModel.createNewHabit.value = Event(createHabit(view))
                 }
