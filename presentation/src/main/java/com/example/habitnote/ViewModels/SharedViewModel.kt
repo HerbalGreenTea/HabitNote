@@ -1,9 +1,8 @@
 package com.example.habitnote.ViewModels
 
-import android.util.Log
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.data.Event
 import com.example.data.Habit
 
 class SharedViewModel: ViewModel() {
@@ -18,21 +17,4 @@ class SharedViewModel: ViewModel() {
     val removeHabit: MutableLiveData<Event<Habit>> by lazy {
         MutableLiveData<Event<Habit>>()
     }
-}
-
-open class Event<out T>(private val content: T) {
-
-    var hasBeenHandled = false
-        private set
-
-    fun getContentIfNotHandled(): T? {
-        return if (hasBeenHandled) {
-            null
-        } else {
-            hasBeenHandled = true
-            content
-        }
-    }
-
-    fun peekContent(): T = content
 }

@@ -47,14 +47,14 @@ class ListHabitAdapter(
     }
 
     override fun onBindViewHolder(holder: HabitsViewHolder, position: Int) {
-        habits[position].index = holder.adapterPosition
+        habits[position].index = position
         val habit = habits[position]
         holder.bind(habit)
 
         if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
             holder.itemView.setOnClickListener {
-                habits[position].index = holder.adapterPosition
-                (onItemClickListener as OnItemClickListener).clickItem(habit)
+                habits[holder.adapterPosition].index = holder.adapterPosition
+                (onItemClickListener as OnItemClickListener).clickItem(habits[holder.adapterPosition])
             }
         }
     }
