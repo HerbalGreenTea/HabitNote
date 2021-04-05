@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.data.Event
@@ -52,7 +53,7 @@ class CreateHabitFragment : Fragment() {
             if (isCorrectData(view)) {
                 if (editHabit) {
                     val newHabit = createHabit(view)
-                    newHabit.index = habit?.index
+                    newHabit.id = habit?.id
 
                     if (newHabit.type != habit?.type && habit != null) {
                         sharedViewModel.removeHabit.value = Event(habit)
@@ -94,14 +95,8 @@ class CreateHabitFragment : Fragment() {
 
     private fun createColorPicker(view: View) {
 
-        val layoutParams = LinearLayout.LayoutParams(180, 180)
-        layoutParams.marginStart = 45
-        layoutParams.marginEnd = 45
-
-        for (i in 0 until 16) {
-            val button = Button(context)
-
-            button.layoutParams = layoutParams
+        for (i in 0 until view.rg_btn_color_picker.size) {
+            val button = (view.rg_btn_color_picker.getChildAt(i) as Button)
 
             button.viewTreeObserver.addOnGlobalLayoutListener {
                 val bx = button.left + button.width / 2
@@ -118,8 +113,6 @@ class CreateHabitFragment : Fragment() {
                     view.create_habit_color.setBackgroundColor(color)
                 }
             }
-
-            view.rg_btn_color_picker.addView(button)
         }
     }
 

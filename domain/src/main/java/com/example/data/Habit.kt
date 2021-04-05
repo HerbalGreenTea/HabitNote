@@ -3,7 +3,7 @@ package com.example.data
 import java.io.Serializable
 
 data class Habit (
-        var index: Int?,
+        var id: Int?,
         var title: String,
         var description: String,
         var priority: PriorityHabit,

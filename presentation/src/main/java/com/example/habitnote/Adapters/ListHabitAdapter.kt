@@ -2,13 +2,15 @@ package com.example.habitnote.Adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.*
+import com.example.habitnote.DiffUtilHabits
 import com.example.habitnote.R
 import kotlinx.android.synthetic.main.item_habit.view.*
 
 class ListHabitAdapter(
-        private var habits: MutableList<Habit>
+        private var habits: List<Habit> = listOf()
 ): RecyclerView.Adapter<ListHabitAdapter.HabitsViewHolder>() {
 
     private var onItemClickListener: OnItemClickListener? = null
@@ -47,37 +49,22 @@ class ListHabitAdapter(
     }
 
     override fun onBindViewHolder(holder: HabitsViewHolder, position: Int) {
-        habits[position].index = position
         val habit = habits[position]
         holder.bind(habit)
 
         if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
             holder.itemView.setOnClickListener {
-                habits[holder.adapterPosition].index = holder.adapterPosition
-                (onItemClickListener as OnItemClickListener).clickItem(habits[holder.adapterPosition])
+                (onItemClickListener as OnItemClickListener).clickItem(habit)
             }
         }
     }
 
     override fun getItemCount(): Int = habits.size
 
-    fun lastNotifyItemChanged() {
-        notifyItemChanged(this.habits.size - 1)
-    }
-
-    fun updateHabit(habit: Habit) {
-        if (habit.index != null) {
-            habits[habit.index as Int].run {
-                title = habit.title
-                description = habit.description
-                type = habit.type
-                priority = habit.priority
-                frequency = habit.frequency
-                count = habit.count
-                color = habit.color
-            }
-            notifyItemChanged(habit.index as Int)
-        }
+    fun updateList(newHabits: List<Habit>) {
+        val diffUtil: DiffUtil.DiffResult = DiffUtil.calculateDiff(DiffUtilHabits(this.habits, newHabits))
+        this.habits = newHabits
+        diffUtil.dispatchUpdatesTo(this)
     }
 
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {

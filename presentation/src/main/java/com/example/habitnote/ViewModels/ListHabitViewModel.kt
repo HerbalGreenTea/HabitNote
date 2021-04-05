@@ -1,6 +1,7 @@
 package com.example.habitnote.ViewModels
 
 import androidx.lifecycle.ViewModel
+import com.example.data.Event
 import com.example.data.Habit
 import com.example.data.TypeHabit
 
@@ -8,33 +9,41 @@ class ListHabitViewModel: ViewModel() {
 
     private val listHabits: MutableList<Habit> = mutableListOf()
 
-    private val goodHabits: MutableList<Habit> = mutableListOf()
-    private val badHabits: MutableList<Habit> = mutableListOf()
+    fun getHabits(type: TypeHabit): List<Habit> {
+        return listHabits.filter { habit -> habit.type == type }
+    }
 
-    fun addHabit(habit: Habit): Habit {
-        listHabits.add(habit)
-        return if (habit.type == TypeHabit.GOOD) {
-            habit.index = goodHabits.size
-            goodHabits.add(habit)
-            habit
+    private fun updateHabit(newDataHabit: Habit) {
+        var oldHabit: Habit? = null
+        listHabits.forEach { habit ->
+            if (habit.id == newDataHabit.id) oldHabit = habit
         }
-        else {
-            habit.index = badHabits.size
-            badHabits.add(habit)
-            habit
+
+        listHabits.replaceAll { habit -> if (habit == oldHabit) newDataHabit else habit}
+    }
+
+    fun createNewHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
+        if (typeHabit == eventHabit.peekContent().type) {
+            val habit = eventHabit.getContentIfNotHandled()
+            if (habit != null) {
+                habit.id = listHabits.size
+                listHabits.add(habit)
+            }
         }
     }
 
-    fun removeHabit(habit: Habit) {
-        listHabits.remove(habit)
-        if (habit.type == TypeHabit.GOOD) {
-            goodHabits.remove(habit)
-        } else {
-            badHabits.remove(habit)
+    fun editHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
+        if (typeHabit == eventHabit.peekContent().type) {
+            val habit = eventHabit.getContentIfNotHandled()
+            if (habit != null) { updateHabit(habit) }
         }
     }
 
-    fun getGoodHabits(): MutableList<Habit> = goodHabits
-    fun getBadHabits(): MutableList<Habit> = badHabits
+    fun switchTypeHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
+        if (typeHabit == eventHabit.peekContent().type) {
+            val habit = eventHabit.getContentIfNotHandled()
+            if (habit != null) { listHabits.remove(habit) }
+        }
+    }
 }
 
