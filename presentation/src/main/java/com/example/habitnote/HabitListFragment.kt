@@ -57,6 +57,8 @@ class HabitListFragment : Fragment() {
 
         view.rv_habits.adapter = ListHabitAdapter().apply {
 
+            updateList(habitsViewModel.getHabits(type))
+
             sharedViewModel.removeHabit.observe(viewLifecycleOwner) {
                 habitsViewModel.switchTypeHabit(type, it)
                 updateList(habitsViewModel.getHabits(type))
@@ -70,6 +72,10 @@ class HabitListFragment : Fragment() {
             sharedViewModel.editHabit.observe(viewLifecycleOwner) {
                 habitsViewModel.editHabit(type, it)
                 updateList(habitsViewModel.getHabits(type))
+            }
+
+            sharedViewModel.actionFilter.observe(viewLifecycleOwner) {
+                updateList(habitsViewModel.filter(type, it.peekContent()))
             }
 
             setOnItemClickListener(object : OnItemClickListener {

@@ -11,6 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/bottom_sheet"
+            layout="@layout/bottom_sheet_filter"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_open_create_habit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/royalPurple"
+            android:src="@drawable/ic_plus"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,13 +32,14 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
-                android:layout_height="30dp">
+                android:layout_height="30dp"
+                app:tabIndicatorColor="@color/royalPurple">
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tab_item_good_habits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/habit_type_good" />
+                    android:text="@string/habit_type_good"/>
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tab_item_bad_habits"
@@ -41,16 +55,6 @@
                 android:layout_height="match_parent"/>
 
         </LinearLayout>
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_open_create_habit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="15dp"
-            android:backgroundTint="@color/royalPurple"
-            android:src="@drawable/ic_plus"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

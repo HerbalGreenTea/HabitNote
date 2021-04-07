@@ -28,6 +28,12 @@
     <string name="text_priority">приоритетом</string>
     <string name="text_witch"> с </string>
 
+    <string name="filter_text_priority">фитрация по приоритету"</string>
+    <string name="filter_text_sort_count">сортировка по количеству повторений</string>
+    <string name="filter_sort_increase">возрасанию</string>
+    <string name="filter_sort_decrease">убыванию</string>
+    <string name="filter_cancel">отмена</string>
+
     <string-array name="habit_priority">
         <item>низкий</item>
         <item>средний</item>
