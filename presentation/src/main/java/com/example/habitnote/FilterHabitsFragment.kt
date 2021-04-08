@@ -48,6 +48,14 @@ class FilterHabitsFragment : Fragment() {
             applyFilter(TypeFilter.SORT_DECREASE_COUNT)
         }
 
+        view.btn_sort_increase_frequency.setOnClickListener {
+            applyFilter(TypeFilter.SORT_INCREASE_FREQUENCY)
+        }
+
+        view.btn_sort_decrease_frequency.setOnClickListener {
+            applyFilter(TypeFilter.SORT_DECREASE_FREQUENCY)
+        }
+
         view.btn_cancel.setOnClickListener {
             applyFilter(TypeFilter.NONE)
         }

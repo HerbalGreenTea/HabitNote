@@ -18,7 +18,6 @@ class HabitListModel {
         listHabits.forEach { habit ->
             if (habit.id == newDataHabit.id) oldHabit = habit
         }
-
         listHabits.replaceAll { habit -> if (habit == oldHabit) newDataHabit else habit}
     }
 

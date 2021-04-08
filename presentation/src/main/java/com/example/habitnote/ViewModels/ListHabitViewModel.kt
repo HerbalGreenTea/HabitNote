@@ -31,6 +31,8 @@ class ListHabitViewModel(
             TypeFilter.PRIORITY_HIGH -> habits.filter { it.priority == PriorityHabit.HIGH }
             TypeFilter.SORT_INCREASE_COUNT -> habits.sortedBy { it.count }
             TypeFilter.SORT_DECREASE_COUNT -> habits.sortedByDescending { it.count }
+            TypeFilter.SORT_INCREASE_FREQUENCY -> habits.sortedBy { it.frequency }
+            TypeFilter.SORT_DECREASE_FREQUENCY -> habits.sortedByDescending { it.frequency }
             TypeFilter.NONE -> habits
         }
     }

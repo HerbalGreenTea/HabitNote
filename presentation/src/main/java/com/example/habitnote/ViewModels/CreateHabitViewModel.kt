@@ -17,10 +17,9 @@ class CreateHabitViewModel: ViewModel() {
     }
 
     fun isCorrectDataFields(strings: List<String>): Boolean {
-        var result = true
         strings.forEach {
-            if (it == "") result = false
+            if (it == "") return false
         }
-        return result
+        return true
     }
 }
