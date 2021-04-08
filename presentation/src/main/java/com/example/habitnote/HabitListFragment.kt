@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.data.Habit
+import com.example.data.HabitListModel
 import com.example.data.OnItemClickListener
 import com.example.data.TypeHabit
 import com.example.habitnote.Adapters.ListHabitAdapter
@@ -31,7 +33,12 @@ class HabitListFragment : Fragment() {
     }
 
     private val habitsViewModel: ListHabitViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(ListHabitViewModel::class.java)
+        @Suppress("UNCHECKED_CAST")
+        ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return ListHabitViewModel(HabitListModel()) as T
+            }
+        }).get(ListHabitViewModel::class.java)
     }
 
     private val  sharedViewModel: SharedViewModel by lazy {

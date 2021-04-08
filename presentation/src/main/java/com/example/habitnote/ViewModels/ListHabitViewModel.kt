@@ -3,51 +3,23 @@ package com.example.habitnote.ViewModels
 import androidx.lifecycle.ViewModel
 import com.example.data.*
 
-class ListHabitViewModel: ViewModel() {
-
-    private val listHabits: MutableList<Habit> = mutableListOf(
-            Habit(1, "test1", "des", PriorityHabit.MID, TypeHabit.GOOD, 100, 100, 999999999),
-            Habit(2, "test2", "des", PriorityHabit.HIGH, TypeHabit.BAD, 300, 300, 999999999),
-            Habit(3, "test3", "des", PriorityHabit.LOW, TypeHabit.BAD, 5, 5, 999999999),
-            Habit(4, "test4", "des", PriorityHabit.LOW, TypeHabit.GOOD, 700, 500, 999999999),
-            Habit(5, "test5", "des", PriorityHabit.HIGH, TypeHabit.GOOD, 1, 1, 999999999),
-    )
+class ListHabitViewModel(
+        private val model: HabitListModel): ViewModel() {
 
     fun getHabits(type: TypeHabit): List<Habit> {
-        return listHabits.filter { habit -> habit.type == type }
-    }
-
-    private fun updateHabit(newDataHabit: Habit) {
-        var oldHabit: Habit? = null
-        listHabits.forEach { habit ->
-            if (habit.id == newDataHabit.id) oldHabit = habit
-        }
-
-        listHabits.replaceAll { habit -> if (habit == oldHabit) newDataHabit else habit}
+        return model.getHabits(type)
     }
 
     fun createNewHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
-        if (typeHabit == eventHabit.peekContent().type) {
-            val habit = eventHabit.getContentIfNotHandled()
-            if (habit != null) {
-                habit.id = listHabits.size
-                listHabits.add(habit)
-            }
-        }
+        model.createNewHabit(typeHabit, eventHabit)
     }
 
     fun editHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
-        if (typeHabit == eventHabit.peekContent().type) {
-            val habit = eventHabit.getContentIfNotHandled()
-            if (habit != null) { updateHabit(habit) }
-        }
+        model.editHabit(typeHabit, eventHabit)
     }
 
     fun switchTypeHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
-        if (typeHabit == eventHabit.peekContent().type) {
-            val habit = eventHabit.getContentIfNotHandled()
-            if (habit != null) { listHabits.remove(habit) }
-        }
+        model.switchTypeHabit(typeHabit, eventHabit)
     }
 
     fun filter(type: TypeHabit, typeFilter: TypeFilter): List<Habit>{

@@ -12,17 +12,28 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.size
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.data.Event
 import com.example.data.Habit
 import com.example.data.PriorityHabit
 import com.example.data.TypeHabit
+import com.example.habitnote.ViewModels.CreateHabitViewModel
 import com.example.habitnote.ViewModels.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_create_habit.*
 import kotlinx.android.synthetic.main.fragment_create_habit.view.*
 
 class CreateHabitFragment : Fragment() {
+
+    private val createHabitViewModel: CreateHabitViewModel by lazy {
+        @Suppress("UNCHECKED_CAST")
+        ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return CreateHabitViewModel() as T
+            }
+        }).get(CreateHabitViewModel::class.java)
+    }
 
     private val  sharedViewModel: SharedViewModel by lazy {
         ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
@@ -50,10 +61,15 @@ class CreateHabitFragment : Fragment() {
         }
 
         view.btn_create_habit.setOnClickListener {
-            if (isCorrectData(view)) {
+            val dataFields = mutableListOf(
+                    view.create_habit_title.text.toString(),
+                    view.create_habit_frequency.text.toString(),
+                    view.create_habit_count.text.toString()
+            )
+
+            if (createHabitViewModel.isCorrectDataFields(dataFields)) {
                 if (editHabit) {
-                    val newHabit = createHabit(view)
-                    newHabit.id = habit?.id
+                    val newHabit = createHabit(view, habit?.id)
 
                     if (newHabit.type != habit?.type && habit != null) {
                         sharedViewModel.removeHabit.value = Event(habit)
@@ -61,28 +77,25 @@ class CreateHabitFragment : Fragment() {
                     } else {
                         sharedViewModel.editHabit.value = Event(newHabit)
                     }
+
                 } else {
-                    sharedViewModel.createNewHabit.value = Event(createHabit(view))
+                    sharedViewModel.createNewHabit.value = Event(createHabit(view, null))
                 }
+
                 findNavController().popBackStack()
             } else {
-                Toast.makeText(context, R.string.toast_empty_field_create_habit, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.toast_empty_field_create_habit, Toast.LENGTH_SHORT)
+                        .show()
             }
         }
     }
 
-    private fun isCorrectData(view: View): Boolean {
-        return !(view.create_habit_title.text.toString() == ""
-                || view.create_habit_frequency.text.toString() == ""
-                || view.create_habit_count.text.toString() == "")
-    }
-
-    private fun createHabit(view: View): Habit {
+    private fun createHabit(view: View, idHabit: Int?): Habit {
         val checkTypeHabit = view.findViewById<RadioButton>(view.create_type_habit.checkedRadioButtonId)
         val priorityPosition = view.create_priority_habit.selectedItemPosition
 
         return Habit(
-                null,
+                idHabit,
                 view.create_habit_title.text.toString(),
                 view.create_description_habit.text.toString(),
                 PriorityHabit.getPriorityAtCode(priorityPosition),
@@ -99,14 +112,9 @@ class CreateHabitFragment : Fragment() {
             val button = (view.rg_btn_color_picker.getChildAt(i) as Button)
 
             button.viewTreeObserver.addOnGlobalLayoutListener {
-                val bx = button.left + button.width / 2
-                val by = button.top + button.height / 2
 
                 val gradientBitmap = view.rg_btn_color_picker.background.toBitmap()
-                if (bx <= gradientBitmap.width) {
-                    val pix = gradientBitmap.getPixel(bx, by)
-                    button.setBackgroundColor(pix)
-                }
+                createHabitViewModel.setColorButton(button, gradientBitmap)
 
                 button.setOnClickListener {
                     val color = (button.background as ColorDrawable).color
