@@ -72,14 +72,14 @@ class CreateHabitFragment : Fragment() {
                     val newHabit = createHabit(view, habit?.id)
 
                     if (newHabit.type != habit?.type && habit != null) {
-                        sharedViewModel.removeHabit.value = Event(habit)
-                        sharedViewModel.createNewHabit.value = Event(newHabit)
+                        sharedViewModel.setValueRemoveHabit(Event(habit))
+                        sharedViewModel.setValueCreateHabit(Event(newHabit))
                     } else {
-                        sharedViewModel.editHabit.value = Event(newHabit)
+                        sharedViewModel.setValueEditHabit(Event(newHabit))
                     }
 
                 } else {
-                    sharedViewModel.createNewHabit.value = Event(createHabit(view, null))
+                    sharedViewModel.setValueCreateHabit(Event(createHabit(view, null)))
                 }
 
                 findNavController().popBackStack()

@@ -34,7 +34,7 @@ class HabitListFragment : Fragment() {
 
     private val habitsViewModel: ListHabitViewModel by lazy {
         @Suppress("UNCHECKED_CAST")
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
+        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ListHabitViewModel(HabitListModel()) as T
             }
@@ -81,8 +81,8 @@ class HabitListFragment : Fragment() {
                 updateList(habitsViewModel.getHabits(type))
             }
 
-            sharedViewModel.actionFilter.observe(viewLifecycleOwner) {
-                updateList(habitsViewModel.filter(type, it.peekContent()))
+            habitsViewModel.actionFilter.observe(viewLifecycleOwner) {
+                updateList(habitsViewModel.filter(type, it))
             }
 
             setOnItemClickListener(object : OnItemClickListener {

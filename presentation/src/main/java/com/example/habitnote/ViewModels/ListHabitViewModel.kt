@@ -1,10 +1,17 @@
 package com.example.habitnote.ViewModels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.data.*
 
 class ListHabitViewModel(
-        private val model: HabitListModel): ViewModel() {
+        private val model: HabitListModel
+        ): ViewModel() {
+
+    private val mutableActionFilter: MutableLiveData<TypeFilter> = MutableLiveData()
+    val actionFilter: LiveData<TypeFilter> = mutableActionFilter
+
 
     fun getHabits(type: TypeHabit): List<Habit> {
         return model.getHabits(type)
@@ -20,6 +27,10 @@ class ListHabitViewModel(
 
     fun switchTypeHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
         model.switchTypeHabit(typeHabit, eventHabit)
+    }
+
+    fun setValueActionFilter(typeFilter: TypeFilter) {
+        mutableActionFilter.value = typeFilter
     }
 
     fun filter(type: TypeHabit, typeFilter: TypeFilter): List<Habit>{
