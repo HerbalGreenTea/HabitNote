@@ -17,7 +17,7 @@ class FilterHabitsFragment : Fragment() {
         @Suppress("UNCHECKED_CAST")
         ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ListHabitViewModel(HabitListModel()) as T
+                return ListHabitViewModel(HabitListModel(), activity?.application!!) as T
             }
         }).get(ListHabitViewModel::class.java)
     }

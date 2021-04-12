@@ -70,14 +70,7 @@ class CreateHabitFragment : Fragment() {
             if (createHabitViewModel.isCorrectDataFields(dataFields)) {
                 if (editHabit) {
                     val newHabit = createHabit(view, habit?.id)
-
-                    if (newHabit.type != habit?.type && habit != null) {
-                        sharedViewModel.setValueRemoveHabit(Event(habit))
-                        sharedViewModel.setValueCreateHabit(Event(newHabit))
-                    } else {
-                        sharedViewModel.setValueEditHabit(Event(newHabit))
-                    }
-
+                    sharedViewModel.setValueEditHabit(Event(newHabit))
                 } else {
                     sharedViewModel.setValueCreateHabit(Event(createHabit(view, null)))
                 }

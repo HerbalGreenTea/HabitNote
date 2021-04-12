@@ -18,7 +18,13 @@ class ListHabitAdapter(
     class HabitsViewHolder(inflater: LayoutInflater, parent: ViewGroup)
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.item_habit, parent, false)) {
 
+        private lateinit var dataHabit: Habit
+
+        fun getDataHabit(): Habit = dataHabit
+
         fun bind(habit: Habit) {
+            dataHabit = habit
+
             itemView.apply {
                 habit_title.text = habit.title
                 habit_title.setTextColor(habit.color)

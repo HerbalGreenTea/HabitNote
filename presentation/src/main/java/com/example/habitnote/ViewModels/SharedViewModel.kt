@@ -21,11 +21,4 @@ class SharedViewModel: ViewModel() {
     fun setValueEditHabit(event: Event<Habit>) {
         mutableEditHabit.value = event
     }
-
-    private val mutableRemoveHabit: MutableLiveData<Event<Habit>> = MutableLiveData()
-    val removeHabit: LiveData<Event<Habit>> = mutableRemoveHabit
-
-    fun setValueRemoveHabit(event: Event<Habit>) {
-        mutableRemoveHabit.value = event
-    }
 }

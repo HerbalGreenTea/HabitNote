@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.data.Habit
 import com.example.data.HabitListModel
 import com.example.data.OnItemClickListener
@@ -15,6 +17,7 @@ import com.example.data.TypeHabit
 import com.example.habitnote.Adapters.ListHabitAdapter
 import com.example.habitnote.ViewModels.ListHabitViewModel
 import com.example.habitnote.ViewModels.SharedViewModel
+import kotlinx.android.synthetic.main.fragment_habit_list.*
 import kotlinx.android.synthetic.main.fragment_habit_list.view.*
 
 class HabitListFragment : Fragment() {
@@ -36,7 +39,7 @@ class HabitListFragment : Fragment() {
         @Suppress("UNCHECKED_CAST")
         ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ListHabitViewModel(HabitListModel()) as T
+                return ListHabitViewModel(HabitListModel(), activity?.application!!) as T
             }
         }).get(ListHabitViewModel::class.java)
     }
@@ -66,23 +69,27 @@ class HabitListFragment : Fragment() {
 
             updateList(habitsViewModel.getHabits(type))
 
-            sharedViewModel.removeHabit.observe(viewLifecycleOwner) {
-                habitsViewModel.switchTypeHabit(type, it)
-                updateList(habitsViewModel.getHabits(type))
-            }
-
             sharedViewModel.createNewHabit.observe(viewLifecycleOwner) {
                 habitsViewModel.createNewHabit(type, it)
                 updateList(habitsViewModel.getHabits(type))
             }
 
             sharedViewModel.editHabit.observe(viewLifecycleOwner) {
-                habitsViewModel.editHabit(type, it)
+                habitsViewModel.editHabit(it)
                 updateList(habitsViewModel.getHabits(type))
             }
 
             habitsViewModel.actionFilter.observe(viewLifecycleOwner) {
                 updateList(habitsViewModel.filter(type, it))
+            }
+
+            habitsViewModel.readAllData.observe(viewLifecycleOwner) {
+                // это надо сделать красиво, убрать isLoadData
+                if (habitsViewModel.isLoadData) {
+                    habitsViewModel.addAllHabits(it)
+                    updateList(habitsViewModel.getHabits(type))
+                    habitsViewModel.isLoadData = false
+                }
             }
 
             setOnItemClickListener(object : OnItemClickListener {
@@ -94,6 +101,22 @@ class HabitListFragment : Fragment() {
                     findNavController().navigate(R.id.createHabitFragment, bundle)
                 }
             })
+
+            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val removeHabit = (viewHolder as ListHabitAdapter.HabitsViewHolder).getDataHabit()
+                    habitsViewModel.removeHabit(removeHabit)
+                    updateList(habitsViewModel.getHabits(type))
+                }
+            }).attachToRecyclerView(rv_habits)
         }
     }
 }

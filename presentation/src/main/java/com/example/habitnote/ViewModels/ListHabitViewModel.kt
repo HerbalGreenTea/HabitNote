@@ -1,36 +1,79 @@
 package com.example.habitnote.ViewModels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.*
 import com.example.data.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ListHabitViewModel(
-        private val model: HabitListModel
-        ): ViewModel() {
+class ListHabitViewModel(private val model: HabitListModel, application: Application)
+    : AndroidViewModel(application) {
+
+    val readAllData: LiveData<List<Habit>>
+    private val repository: HabitRepository
+
+    init {
+        val habitDao = HabitDatabase.getDatabase(application).habitDao()
+        repository = HabitRepository(habitDao)
+        readAllData = repository.readAllData
+    }
+
+    private fun addHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addHabit(habit)
+        }
+    }
+
+    private fun deleteHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteHabit(habit)
+        }
+    }
+
+    private fun updateHabit(habit: Habit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateHabit(habit)
+        }
+    }
+
+    fun addAllHabits(habits: List<Habit>) {
+        model.addAllHabits(habits)
+    }
+
+    var isLoadData = true
+
+    ////////////////////////////////////////////////////////////////////////////////////
 
     private val mutableActionFilter: MutableLiveData<TypeFilter> = MutableLiveData()
     val actionFilter: LiveData<TypeFilter> = mutableActionFilter
 
+    fun setValueActionFilter(typeFilter: TypeFilter) {
+        mutableActionFilter.value = typeFilter
+    }
 
     fun getHabits(type: TypeHabit): List<Habit> {
         return model.getHabits(type)
     }
 
     fun createNewHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
-        model.createNewHabit(typeHabit, eventHabit)
+        val habit = model.createNewHabit(typeHabit, eventHabit)
+        if (habit != null)
+            addHabit(habit)
     }
 
-    fun editHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
-        model.editHabit(typeHabit, eventHabit)
+    fun editHabit(eventHabit: Event<Habit>) {
+        val habit = eventHabit.getContentIfNotHandled()
+        if (habit != null) {
+            updateHabit(habit)
+            model.editHabit(habit)
+        }
     }
 
-    fun switchTypeHabit(typeHabit: TypeHabit, eventHabit: Event<Habit>) {
-        model.switchTypeHabit(typeHabit, eventHabit)
-    }
-
-    fun setValueActionFilter(typeFilter: TypeFilter) {
-        mutableActionFilter.value = typeFilter
+    fun removeHabit(habit: Habit) {
+        deleteHabit(habit)
+        model.removeHabit(habit)
     }
 
     fun filter(type: TypeHabit, typeFilter: TypeFilter): List<Habit>{
