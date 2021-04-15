@@ -2,39 +2,35 @@ package com.example.habitnote.ViewModels
 
 import android.app.Application
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ListHabitViewModel(private val model: HabitListModel, application: Application)
-    : AndroidViewModel(application) {
+class ListHabitViewModel(
+    private val model: HabitListModel,
+    private val databaseHabits: HabitRepository
+    ): ViewModel() {
 
-    val readAllData: LiveData<List<Habit>>
-    private val repository: HabitRepository
-
-    init {
-        val habitDao = HabitDatabase.getDatabase(application).habitDao()
-        repository = HabitRepository(habitDao)
-        readAllData = repository.readAllData
-    }
+    val readAllData: LiveData<List<Habit>> = databaseHabits.readAllData
 
     private fun addHabit(habit: Habit) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addHabit(habit)
+            databaseHabits.addHabit(habit)
         }
     }
 
     private fun deleteHabit(habit: Habit) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteHabit(habit)
+            databaseHabits.deleteHabit(habit)
         }
     }
 
     private fun updateHabit(habit: Habit) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateHabit(habit)
+            databaseHabits.updateHabit(habit)
         }
     }
 

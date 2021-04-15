@@ -10,10 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.Habit
-import com.example.data.HabitListModel
-import com.example.data.OnItemClickListener
-import com.example.data.TypeHabit
+import com.example.data.*
 import com.example.habitnote.Adapters.ListHabitAdapter
 import com.example.habitnote.ViewModels.ListHabitViewModel
 import com.example.habitnote.ViewModels.SharedViewModel
@@ -39,7 +36,10 @@ class HabitListFragment : Fragment() {
         @Suppress("UNCHECKED_CAST")
         ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ListHabitViewModel(HabitListModel(), activity?.application!!) as T
+                return ListHabitViewModel(
+                    HabitListModel(),
+                    HabitRepository(HabitDatabase.getDatabase(requireContext()).habitDao())
+                ) as T
             }
         }).get(ListHabitViewModel::class.java)
     }
