@@ -67,29 +67,26 @@ class HabitListFragment : Fragment() {
 
         view.rv_habits.adapter = ListHabitAdapter().apply {
 
-            updateList(habitsViewModel.getHabits(type))
-
             sharedViewModel.createNewHabit.observe(viewLifecycleOwner) {
-                habitsViewModel.createNewHabit(type, it)
-                updateList(habitsViewModel.getHabits(type))
+                val habit = it.getContentIfNotHandled()
+                if (habit != null)
+                    habitsViewModel.addHabit(habit)
             }
 
             sharedViewModel.editHabit.observe(viewLifecycleOwner) {
-                habitsViewModel.editHabit(it)
-                updateList(habitsViewModel.getHabits(type))
+                val habit = it.getContentIfNotHandled()
+                if (habit != null)
+                    habitsViewModel.updateHabit(habit)
             }
 
             habitsViewModel.actionFilter.observe(viewLifecycleOwner) {
-                updateList(habitsViewModel.filter(type, it))
+                habitsViewModel.currentTypeFilter = it
+                updateList(habitsViewModel.getHabits(type))
             }
 
             habitsViewModel.readAllData.observe(viewLifecycleOwner) {
-                // это надо сделать красиво, убрать isLoadData
-                if (habitsViewModel.isLoadData) {
-                    habitsViewModel.addAllHabits(it)
-                    updateList(habitsViewModel.getHabits(type))
-                    habitsViewModel.isLoadData = false
-                }
+                habitsViewModel.loadHabits(it)
+                updateList(habitsViewModel.getHabits(type))
             }
 
             setOnItemClickListener(object : OnItemClickListener {
@@ -113,8 +110,7 @@ class HabitListFragment : Fragment() {
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val removeHabit = (viewHolder as ListHabitAdapter.HabitsViewHolder).getDataHabit()
-                    habitsViewModel.removeHabit(removeHabit)
-                    updateList(habitsViewModel.getHabits(type))
+                    habitsViewModel.deleteHabit(removeHabit)
                 }
             }).attachToRecyclerView(rv_habits)
         }
