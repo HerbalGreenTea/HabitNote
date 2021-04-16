@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +38,6 @@ class HabitListFragment : Fragment() {
         ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ListHabitViewModel(
-                    HabitListModel(),
                     HabitRepository(HabitDatabase.getDatabase(requireContext()).habitDao())
                 ) as T
             }
@@ -68,25 +68,22 @@ class HabitListFragment : Fragment() {
         view.rv_habits.adapter = ListHabitAdapter().apply {
 
             sharedViewModel.createNewHabit.observe(viewLifecycleOwner) {
-                val habit = it.getContentIfNotHandled()
-                if (habit != null)
-                    habitsViewModel.addHabit(habit)
+                habitsViewModel.addHabit(it)
+
             }
 
             sharedViewModel.editHabit.observe(viewLifecycleOwner) {
-                val habit = it.getContentIfNotHandled()
-                if (habit != null)
-                    habitsViewModel.updateHabit(habit)
+                habitsViewModel.updateHabit(it)
             }
 
             habitsViewModel.actionFilter.observe(viewLifecycleOwner) {
-                habitsViewModel.currentTypeFilter = it
-                updateList(habitsViewModel.getHabits(type))
+                val habits = habitsViewModel.readAllData.value
+                if (habits != null)
+                    updateList(habitsViewModel.filter(habits, type, it))
             }
 
             habitsViewModel.readAllData.observe(viewLifecycleOwner) {
-                habitsViewModel.loadHabits(it)
-                updateList(habitsViewModel.getHabits(type))
+                updateList(habitsViewModel.filter(it, type, TypeFilter.NONE))
             }
 
             setOnItemClickListener(object : OnItemClickListener {
