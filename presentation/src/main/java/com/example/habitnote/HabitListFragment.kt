@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +37,7 @@ class HabitListFragment : Fragment() {
         ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ListHabitViewModel(
-                    HabitRepository(HabitDatabase.getDatabase(requireContext()).habitDao())
+                    HabitInteractor(HabitRepositoryImpl(HabitDatabase.getDatabase(requireContext()).habitDao()))
                 ) as T
             }
         }).get(ListHabitViewModel::class.java)
@@ -79,11 +78,11 @@ class HabitListFragment : Fragment() {
             habitsViewModel.actionFilter.observe(viewLifecycleOwner) {
                 val habits = habitsViewModel.readAllData.value
                 if (habits != null)
-                    updateList(habitsViewModel.filter(habits, type, it))
+                    updateList(habitsViewModel.applyFilter(habits, type, it))
             }
 
             habitsViewModel.readAllData.observe(viewLifecycleOwner) {
-                updateList(habitsViewModel.filter(it, type, TypeFilter.NONE))
+                updateList(habitsViewModel.applyFilter(it, type, TypeFilter.NONE))
             }
 
             setOnItemClickListener(object : OnItemClickListener {

@@ -18,7 +18,7 @@ class FilterHabitsFragment : Fragment() {
         ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ListHabitViewModel(
-                    HabitRepository(HabitDatabase.getDatabase(requireContext()).habitDao())
+                    HabitInteractor(HabitRepositoryImpl(HabitDatabase.getDatabase(requireContext()).habitDao()))
                 ) as T
             }
         }).get(ListHabitViewModel::class.java)
