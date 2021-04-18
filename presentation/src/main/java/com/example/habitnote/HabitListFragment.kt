@@ -16,6 +16,7 @@ import com.example.habitnote.ViewModels.ListHabitViewModel
 import com.example.habitnote.ViewModels.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_habit_list.*
 import kotlinx.android.synthetic.main.fragment_habit_list.view.*
+import javax.inject.Inject
 
 class HabitListFragment : Fragment() {
 
@@ -32,13 +33,14 @@ class HabitListFragment : Fragment() {
         }
     }
 
+    @Inject
+    lateinit var habitInteractor: HabitInteractor
+
     private val habitsViewModel: ListHabitViewModel by lazy {
         @Suppress("UNCHECKED_CAST")
         ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ListHabitViewModel(
-                    HabitInteractor(HabitRepositoryImpl(HabitDatabase.getDatabase(requireContext()).habitDao()))
-                ) as T
+                return ListHabitViewModel(habitInteractor) as T
             }
         }).get(ListHabitViewModel::class.java)
     }
@@ -56,6 +58,8 @@ class HabitListFragment : Fragment() {
         if (viewFragment == null)
             viewFragment = inflater.inflate(R.layout.fragment_habit_list, container, false)
 
+        App.appComponent.inject(this)
+
         return viewFragment
     }
 
@@ -68,7 +72,6 @@ class HabitListFragment : Fragment() {
 
             sharedViewModel.createNewHabit.observe(viewLifecycleOwner) {
                 habitsViewModel.addHabit(it)
-
             }
 
             sharedViewModel.editHabit.observe(viewLifecycleOwner) {
