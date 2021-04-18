@@ -23,21 +23,14 @@ import com.example.habitnote.ViewModels.CreateHabitViewModel
 import com.example.habitnote.ViewModels.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_create_habit.*
 import kotlinx.android.synthetic.main.fragment_create_habit.view.*
+import javax.inject.Inject
 
 class CreateHabitFragment : Fragment() {
 
-    private val createHabitViewModel: CreateHabitViewModel by lazy {
-        @Suppress("UNCHECKED_CAST")
-        ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return CreateHabitViewModel() as T
-            }
-        }).get(CreateHabitViewModel::class.java)
-    }
-
-    private val  sharedViewModel: SharedViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-    }
+    @Inject
+    lateinit var createHabitViewModel: CreateHabitViewModel
+    @Inject
+    lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +38,7 @@ class CreateHabitFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_create_habit, container, false)
 
+        MainActivity.viewModelComponent.inject(this)
         createColorPicker(view)
 
         return view

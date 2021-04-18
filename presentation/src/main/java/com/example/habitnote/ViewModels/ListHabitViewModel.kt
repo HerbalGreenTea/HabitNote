@@ -4,8 +4,9 @@ import androidx.lifecycle.*
 import com.example.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ListHabitViewModel(
+class ListHabitViewModel @Inject constructor(
     private val habitInteractor: HabitInteractor
     ): ViewModel() {
 

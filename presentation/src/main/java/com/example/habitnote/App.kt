@@ -16,7 +16,6 @@ class App: Application() {
     }
 
     private fun settingDagger() {
-
         appComponent = DaggerAppComponent.builder()
             .contextModule(ContextModule(applicationContext))
             .build()

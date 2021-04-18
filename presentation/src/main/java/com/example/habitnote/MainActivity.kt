@@ -3,24 +3,22 @@ package com.example.habitnote
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
+import com.example.habitnote.di.ActivityModule
+import com.example.habitnote.di.ViewModelComponent
+import com.example.habitnote.di.ViewModelListHabitModule
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    companion object {
+        lateinit var viewModelComponent: ViewModelComponent
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        settingViewModelsComponent()
         navigation_view.setNavigationItemSelectedListener(this)
     }
 
@@ -34,5 +32,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         return true
+    }
+
+    private fun settingViewModelsComponent() {
+        viewModelComponent = App.appComponent
+            .viewModelComponent(
+                ViewModelListHabitModule(),
+                ActivityModule(this)
+            )
     }
 }

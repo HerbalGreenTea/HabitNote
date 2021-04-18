@@ -15,22 +15,13 @@ import javax.inject.Inject
 class FilterHabitsFragment : Fragment() {
 
     @Inject
-    lateinit var habitInteractor: HabitInteractor
-
-    private val habitsViewModel: ListHabitViewModel by lazy {
-        @Suppress("UNCHECKED_CAST")
-        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ListHabitViewModel(habitInteractor) as T
-            }
-        }).get(ListHabitViewModel::class.java)
-    }
+    lateinit var habitsViewModel: ListHabitViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_filter_habits, container, false)
 
-        App.appComponent.inject(this)
+        MainActivity.viewModelComponent.inject(this)
 
         return view
     }

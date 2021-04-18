@@ -1,8 +1,6 @@
 package com.example.habitnote.di
 
 import android.content.Context
-import com.example.habitnote.FilterHabitsFragment
-import com.example.habitnote.HabitListFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,6 +11,7 @@ import javax.inject.Singleton
 interface AppComponent {
     val context: Context
 
-    fun inject(habitListFragment: HabitListFragment)
-    fun inject(filterHabitsFragment: FilterHabitsFragment)
+    fun viewModelComponent(
+            viewModelListHabitModel: ViewModelListHabitModule,
+            activityModule: ActivityModule): ViewModelComponent
 }
