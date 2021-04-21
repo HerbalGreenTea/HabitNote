@@ -22,6 +22,7 @@ import com.example.habitnote.ViewModels.CreateHabitViewModel
 import com.example.habitnote.ViewModels.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_create_habit.*
 import kotlinx.android.synthetic.main.fragment_create_habit.view.*
+import java.util.*
 import javax.inject.Inject
 
 class CreateHabitFragment : Fragment() {
@@ -82,7 +83,6 @@ class CreateHabitFragment : Fragment() {
         val priorityPosition = view.create_priority_habit.selectedItemPosition
 
         val newHabit = Habit(
-                oldHabit?.id,
                 view.create_habit_title.text.toString(),
                 view.create_description_habit.text.toString(),
                 PriorityHabit.getPriorityAtCode(priorityPosition),
@@ -90,9 +90,12 @@ class CreateHabitFragment : Fragment() {
                 view.create_habit_frequency.text.toString().toInt(),
                 view.create_habit_count.text.toString().toInt(),
                 (view.create_habit_color.background as ColorDrawable).color,
-                10
+                GregorianCalendar().time.time
         )
-        newHabit.uid = oldHabit?.uid
+        if (oldHabit != null) {
+            newHabit.id = oldHabit.id
+            newHabit.date = GregorianCalendar().time.time
+        }
 
         return newHabit
     }

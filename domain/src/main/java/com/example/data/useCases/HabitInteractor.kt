@@ -16,34 +16,28 @@ class HabitInteractor(
 
     suspend fun loadData() {
         val habits: List<Habit> = habitNetworkRepository.getHabits()
-        val habitsUid: List<HabitUid?> = databaseHabits.getAllHabit().map { habit -> habit.uid }
-
-        habits.forEach {
-            if (!habitsUid.contains(it.uid)) {
-                databaseHabits.addHabit(it)
-            }
-        }
+        habits.forEach { databaseHabits.addHabit(it) }
     }
 
     suspend fun addHabit(habit: Habit) {
-        val habitUid = habitNetworkRepository.putHabit(habit).uid
-        habit.uid = habitUid
-        if (habit.uid != null)
+        val habitUid = habitNetworkRepository.putHabit(habit).id
+        habit.id = habitUid
+        if (habit.id.uid != null)
             databaseHabits.addHabit(habit)
     }
 
     suspend fun updateHabit(habit: Habit) {
-        if (habit.uid != null)
-            habitNetworkRepository.deleteHabit(habit.uid as HabitUid)
-        val habitUid = habitNetworkRepository.putHabit(habit).uid
-        habit.uid = habitUid
-        databaseHabits.updateHabit(habit)
+        if (habit.id.uid != null) {
+            habitNetworkRepository.putHabit(habit)
+            databaseHabits.updateHabit(habit)
+        }
     }
 
     suspend fun deleteHabit(habit: Habit) {
-        if (habit.uid != null)
-            habitNetworkRepository.deleteHabit(habit.uid as HabitUid)
-        databaseHabits.deleteHabit(habit)
+        if (habit.id.uid != null) {
+            habitNetworkRepository.deleteHabit(habit.id)
+            databaseHabits.deleteHabit(habit)
+        }
     }
 
     fun filter(habits: List<Habit>, type: TypeHabit, typeFilter: TypeFilter): List<Habit>{

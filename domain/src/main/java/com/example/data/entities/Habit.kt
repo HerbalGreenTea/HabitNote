@@ -12,8 +12,6 @@ import java.io.Serializable
         HabitConverterType::class,
         HabitConverterUid::class)
 data class Habit (
-    @PrimaryKey(autoGenerate = true)
-    var id: Int? = null,
     var title: String = "",
     var description: String = "",
     var priority: PriorityHabit = PriorityHabit.LOW,
@@ -21,6 +19,8 @@ data class Habit (
     var frequency: Int = 0,
     var count: Int = 0,
     var color: Int = 0,
-    var date: Int = 0,
-    var uid: HabitUid? = null
-): Serializable
+    var date: Long = 0
+): Serializable {
+    @PrimaryKey
+    var id: HabitUid = HabitUid(null)
+}

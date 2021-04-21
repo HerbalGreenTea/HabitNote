@@ -17,7 +17,6 @@ class HabitJsonDeserializer: JsonDeserializer<Habit> {
     ): Habit {
         if (json != null) {
             val habit = Habit(
-                null,
                 json.asJsonObject?.get("title")?.asString ?: "",
                 json.asJsonObject?.get("description")?.asString ?: "",
                 PriorityHabit.getPriorityAtCode(json.asJsonObject?.get("priority")?.asInt ?: 0),
@@ -25,9 +24,9 @@ class HabitJsonDeserializer: JsonDeserializer<Habit> {
                 json.asJsonObject?.get("frequency")?.asInt ?: 0,
                 json.asJsonObject?.get("count")?.asInt ?: 0,
                 json.asJsonObject?.get("color")?.asInt ?: 0,
-                json.asJsonObject?.get("date")?.asInt ?: 0
+                json.asJsonObject?.get("date")?.asLong ?: 0
             )
-            habit.uid = HabitUid(json.asJsonObject?.get("uid")?.asString)
+            habit.id = HabitUid(json.asJsonObject?.get("uid")?.asString)
             return habit
         } else {
             return Habit()

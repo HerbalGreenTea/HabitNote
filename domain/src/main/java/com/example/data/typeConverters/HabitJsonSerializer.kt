@@ -14,6 +14,7 @@ class HabitJsonSerializer: JsonSerializer<Habit?> {
         context: JsonSerializationContext?
     ): JsonElement = JsonObject().apply {
         if (src != null) {
+            addProperty("uid", src.id.uid)
             addProperty("title", src.title)
             addProperty("description", src.description)
             addProperty("priority", src.priority.priorityCode)
