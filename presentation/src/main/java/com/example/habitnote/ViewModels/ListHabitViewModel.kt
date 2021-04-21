@@ -10,6 +10,12 @@ class ListHabitViewModel @Inject constructor(
     private val habitInteractor: HabitInteractor
     ): ViewModel() {
 
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            habitInteractor.loadData()
+        }
+    }
+
     val readAllData: LiveData<List<Habit>> = habitInteractor.readAllData.asLiveData()
 
     private val mutableActionFilter: MutableLiveData<TypeFilter> = MutableLiveData()

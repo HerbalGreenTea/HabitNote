@@ -7,13 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.size
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.data.Event
 import com.example.data.Habit
@@ -47,23 +44,24 @@ class CreateHabitFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val habit = arguments?.getSerializable(HabitListFragment.HABIT) as? Habit
+        val oldHabit = arguments?.getSerializable(HabitListFragment.HABIT) as? Habit
         val editHabit = arguments?.getBoolean(HabitListFragment.EDIT_HABIT, false) ?: false
 
-        if (habit != null) {
-            setDataHabitInField(view, habit)
+        if (oldHabit != null) {
+            setDataHabitInField(view, oldHabit)
         }
 
         view.btn_create_habit.setOnClickListener {
             val dataFields = mutableListOf(
                     view.create_habit_title.text.toString(),
                     view.create_habit_frequency.text.toString(),
-                    view.create_habit_count.text.toString()
+                    view.create_habit_count.text.toString(),
+                    view.create_description_habit.text.toString()
             )
 
             if (createHabitViewModel.isCorrectDataFields(dataFields)) {
                 if (editHabit) {
-                    val newHabit = createHabit(view, habit?.id)
+                    val newHabit = createHabit(view, oldHabit)
                     sharedViewModel.setValueEditHabit(Event(newHabit))
                 } else {
                     sharedViewModel.setValueCreateHabit(Event(createHabit(view, null)))
@@ -77,20 +75,24 @@ class CreateHabitFragment : Fragment() {
         }
     }
 
-    private fun createHabit(view: View, idHabit: Int?): Habit {
+    private fun createHabit(view: View, oldHabit: Habit?): Habit {
         val checkTypeHabit = view.findViewById<RadioButton>(view.create_type_habit.checkedRadioButtonId)
         val priorityPosition = view.create_priority_habit.selectedItemPosition
 
-        return Habit(
-                idHabit,
+        val newHabit = Habit(
+                oldHabit?.id,
                 view.create_habit_title.text.toString(),
                 view.create_description_habit.text.toString(),
                 PriorityHabit.getPriorityAtCode(priorityPosition),
                 TypeHabit.getTypeAtCode(create_type_habit.indexOfChild(checkTypeHabit)),
                 view.create_habit_frequency.text.toString().toInt(),
                 view.create_habit_count.text.toString().toInt(),
-                (view.create_habit_color.background as ColorDrawable).color
+                (view.create_habit_color.background as ColorDrawable).color,
+                10
         )
+        newHabit.uid = oldHabit?.uid
+
+        return newHabit
     }
 
     private fun createColorPicker(view: View) {

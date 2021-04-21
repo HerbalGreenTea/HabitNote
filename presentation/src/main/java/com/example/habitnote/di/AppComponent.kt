@@ -7,6 +7,8 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     ContextModule::class,
+    HabitDatabaseRepositoryModule::class,
+    HabitNetworkRepositoryModule::class,
     HabitInteractorModule::class])
 interface AppComponent {
     val context: Context

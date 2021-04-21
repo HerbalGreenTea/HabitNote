@@ -7,17 +7,23 @@ import androidx.room.TypeConverters
 import java.io.Serializable
 
 @Entity(tableName = "habit_table")
-@TypeConverters(HabitConverterPriority::class, HabitConverterType::class)
+@TypeConverters(
+        HabitConverterPriority::class,
+        HabitConverterType::class,
+        HabitConverterUid::class)
 data class Habit (
-    @PrimaryKey(autoGenerate = true)
-    var id: Int?,
-    var title: String,
-    var description: String,
-    var priority: PriorityHabit,
-    var type: TypeHabit,
-    var frequency: Int,
-    var count: Int,
-    var color: Int): Serializable
+        @PrimaryKey(autoGenerate = true)
+        var id: Int?,
+        var title: String = "",
+        var description: String = "",
+        var priority: PriorityHabit = PriorityHabit.LOW,
+        var type: TypeHabit = TypeHabit.GOOD,
+        var frequency: Int = 0,
+        var count: Int = 0,
+        var color: Int = 0,
+        var date: Int = 0): Serializable {
+        var uid: HabitUid? = null
+    }
 
 class HabitConverterType {
 
@@ -41,5 +47,17 @@ class HabitConverterPriority {
     @TypeConverter
     fun toTypePriority(code: Int): PriorityHabit {
         return PriorityHabit.getPriorityAtCode(code)
+    }
+}
+
+class HabitConverterUid {
+    @TypeConverter
+    fun fromHabitUid(habitUid: HabitUid): String? {
+        return habitUid.uid
+    }
+
+    @TypeConverter
+    fun toHabitUid(uid: String?): HabitUid {
+        return HabitUid(uid)
     }
 }

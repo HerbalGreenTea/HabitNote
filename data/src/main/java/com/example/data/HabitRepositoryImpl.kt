@@ -9,6 +9,10 @@ class HabitRepositoryImpl(private val habitDao: HabitDao): HabitRepository {
         return habitDao.readAllData()
     }
 
+    override suspend fun getAllHabit(): List<Habit> {
+        return habitDao.getHabits()
+    }
+
     override suspend fun addHabit(habit: Habit) {
         habitDao.addHabit(habit)
     }

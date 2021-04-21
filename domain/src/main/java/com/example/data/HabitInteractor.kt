@@ -3,20 +3,41 @@ package com.example.data
 import kotlinx.coroutines.flow.Flow
 
 class HabitInteractor(
-    private val databaseHabits: HabitRepository
+    private val databaseHabits: HabitRepository,
+    private val habitNetworkRepository: HabitNetworkRepository
 ) {
 
     val readAllData: Flow<List<Habit>> = databaseHabits.readAllData()
 
+    suspend fun loadData() {
+        val habits: List<Habit> = habitNetworkRepository.getHabits()
+        val dbhabits: List<HabitUid?> = databaseHabits.getAllHabit().map { habit -> habit.uid }
+
+        habits.forEach {
+            if (!dbhabits.contains(it.uid)) {
+                databaseHabits.addHabit(it)
+            }
+        }
+    }
+
     suspend fun addHabit(habit: Habit) {
-        databaseHabits.addHabit(habit)
+        val habitUid = habitNetworkRepository.putHabit(habit).uid
+        habit.uid = habitUid
+        if (habit.uid != null)
+            databaseHabits.addHabit(habit)
     }
 
     suspend fun updateHabit(habit: Habit) {
+        if (habit.uid != null)
+            habitNetworkRepository.deleteHabit(habit.uid as HabitUid)
+        val habitUid = habitNetworkRepository.putHabit(habit).uid
+        habit.uid = habitUid
         databaseHabits.updateHabit(habit)
     }
 
     suspend fun deleteHabit(habit: Habit) {
+        if (habit.uid != null)
+            habitNetworkRepository.deleteHabit(habit.uid as HabitUid)
         databaseHabits.deleteHabit(habit)
     }
 
