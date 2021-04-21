@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/createHabitFragment"
-        android:name="com.example.habitnote.CreateHabitFragment"
+        android:name="com.example.habitnote.fragments.CreateHabitFragment"
         android:label="fragment_create_habit"
         tools:layout="@layout/fragment_create_habit" />
 
     <fragment
         android:id="@+id/descriptionAppFragment"
-        android:name="com.example.habitnote.DescriptionAppFragment"
+        android:name="com.example.habitnote.fragments.DescriptionAppFragment"
         android:label="fragment_description_app"
         tools:layout="@layout/fragment_description_app" >
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.example.habitnote.ViewPagerFragment"
+        android:name="com.example.habitnote.fragments.ViewPagerFragment"
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_view_pager" >
         <action

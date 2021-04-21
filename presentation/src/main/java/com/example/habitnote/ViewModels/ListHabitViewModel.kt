@@ -1,7 +1,11 @@
 package com.example.habitnote.ViewModels
 
 import androidx.lifecycle.*
-import com.example.data.*
+import com.example.data.entities.Habit
+import com.example.data.entities.TypeFilter
+import com.example.data.entities.TypeHabit
+import com.example.data.useCases.Event
+import com.example.data.useCases.HabitInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject

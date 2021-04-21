@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.*
-import com.example.habitnote.DiffUtilHabits
+import com.example.data.entities.Habit
+import com.example.data.entities.PriorityHabit
+import com.example.data.entities.TypeHabit
+import com.example.data.useCases.OnItemClickListener
 import com.example.habitnote.R
 import kotlinx.android.synthetic.main.item_habit.view.*
 

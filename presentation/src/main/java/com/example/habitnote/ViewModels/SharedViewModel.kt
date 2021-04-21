@@ -3,9 +3,8 @@ package com.example.habitnote.ViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.data.Event
-import com.example.data.Habit
-import com.example.data.TypeFilter
+import com.example.data.useCases.Event
+import com.example.data.entities.Habit
 
 class SharedViewModel: ViewModel() {
     private val mutableCreateHabit: MutableLiveData<Event<Habit>> = MutableLiveData()

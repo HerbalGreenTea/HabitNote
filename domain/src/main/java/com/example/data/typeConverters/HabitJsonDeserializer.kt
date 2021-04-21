@@ -1,0 +1,36 @@
+package com.example.data.typeConverters
+
+import com.example.data.entities.Habit
+import com.example.data.entities.HabitUid
+import com.example.data.entities.PriorityHabit
+import com.example.data.entities.TypeHabit
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import java.lang.reflect.Type
+
+class HabitJsonDeserializer: JsonDeserializer<Habit> {
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): Habit {
+        if (json != null) {
+            val habit = Habit(
+                null,
+                json.asJsonObject?.get("title")?.asString ?: "",
+                json.asJsonObject?.get("description")?.asString ?: "",
+                PriorityHabit.getPriorityAtCode(json.asJsonObject?.get("priority")?.asInt ?: 0),
+                TypeHabit.getTypeAtCode(json.asJsonObject?.get("type")?.asInt ?: 0),
+                json.asJsonObject?.get("frequency")?.asInt ?: 0,
+                json.asJsonObject?.get("count")?.asInt ?: 0,
+                json.asJsonObject?.get("color")?.asInt ?: 0,
+                json.asJsonObject?.get("date")?.asInt ?: 0
+            )
+            habit.uid = HabitUid(json.asJsonObject?.get("uid")?.asString)
+            return habit
+        } else {
+            return Habit()
+        }
+    }
+}

@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.navigation.fragment.findNavController
-import com.example.habitnote.di.ActivityModule
-import com.example.habitnote.di.ViewModelComponent
-import com.example.habitnote.di.ViewModelListHabitModule
+import com.example.habitnote.di.modules.FragmentActivityModule
+import com.example.habitnote.di.сomponents.ViewModelComponent
+import com.example.habitnote.di.modules.viewModelModules.ViewModelListHabitModule
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModelComponent = App.appComponent
             .viewModelComponent(
                 ViewModelListHabitModule(),
-                ActivityModule(this)
+                FragmentActivityModule(this)
             )
     }
 }

@@ -1,0 +1,12 @@
+package com.example.data.entities
+
+enum class TypeFilter {
+    PRIORITY_LOW,
+    PRIORITY_MID,
+    PRIORITY_HIGH,
+    SORT_INCREASE_COUNT,
+    SORT_DECREASE_COUNT,
+    SORT_INCREASE_FREQUENCY,
+    SORT_DECREASE_FREQUENCY,
+    NONE
+}
