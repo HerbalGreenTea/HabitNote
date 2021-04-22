@@ -95,6 +95,7 @@ class CreateHabitFragment : Fragment() {
         if (oldHabit != null) {
             newHabit.id = oldHabit.id
             newHabit.date = GregorianCalendar().time.time
+            newHabit.doneDates = oldHabit.doneDates
         }
 
         return newHabit

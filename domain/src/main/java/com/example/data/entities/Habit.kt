@@ -10,7 +10,8 @@ import java.io.Serializable
 @TypeConverters(
         HabitConverterPriority::class,
         HabitConverterType::class,
-        HabitConverterUid::class)
+        HabitConverterUid::class,
+        HabitConverterDoneDates::class)
 data class Habit (
     var title: String = "",
     var description: String = "",
@@ -23,4 +24,5 @@ data class Habit (
 ): Serializable {
     @PrimaryKey
     var id: HabitUid = HabitUid(null)
+    var doneDates: List<Long> = listOf()
 }

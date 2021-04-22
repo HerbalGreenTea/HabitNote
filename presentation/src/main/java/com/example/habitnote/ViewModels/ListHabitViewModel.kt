@@ -1,6 +1,7 @@
 package com.example.habitnote.ViewModels
 
 import androidx.lifecycle.*
+import com.example.data.entities.DoneHabit
 import com.example.data.entities.Habit
 import com.example.data.entities.TypeFilter
 import com.example.data.entities.TypeHabit
@@ -50,6 +51,12 @@ class ListHabitViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 habitInteractor.updateHabit(habit)
             }
+        }
+    }
+
+    fun doneHabit(doneHabit: DoneHabit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            habitInteractor.doneHabit(doneHabit)
         }
     }
 

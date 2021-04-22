@@ -1,6 +1,7 @@
 package com.example.habitnote.di.modules
 
 import android.content.Context
+import androidx.room.Room
 import com.example.data.database.HabitDao
 import com.example.data.database.HabitDatabase
 import com.example.data.database.HabitDatabaseRepositoryImpl
@@ -15,7 +16,11 @@ class HabitDatabaseRepositoryModule {
     @Provides
     @Singleton
     fun provideHabitDatabase(context: Context): HabitDatabase {
-        return HabitDatabase.getDatabase(context)
+        return Room.databaseBuilder(
+                context,
+                HabitDatabase::class.java,
+                "habit_database"
+        ).build()
     }
 
     @Provides

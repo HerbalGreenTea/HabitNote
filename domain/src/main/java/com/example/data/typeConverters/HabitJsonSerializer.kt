@@ -23,6 +23,13 @@ class HabitJsonSerializer: JsonSerializer<Habit?> {
             addProperty("count", src.count)
             addProperty("color", src.color)
             addProperty("date", src.date)
+
+            if (src.doneDates.isNotEmpty()) {
+                val strDates = src.doneDates
+                        .map { it.toString() }
+                        .reduce { dates, date -> "${date}, $date" }
+                addProperty("done_dates", strDates)
+            }
         }
     }
 }

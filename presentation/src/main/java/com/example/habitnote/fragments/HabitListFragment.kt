@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.entities.DoneHabit
 import com.example.data.entities.Habit
 import com.example.data.entities.TypeFilter
 import com.example.data.entities.TypeHabit
@@ -79,13 +81,23 @@ class HabitListFragment : Fragment() {
                 updateList(habitsViewModel.applyFilter(it, type, TypeFilter.NONE))
             }
 
-            setOnItemClickListener(object : OnItemClickListener {
+            setOnItemClickListenerHabitEdit(object : OnItemClickListener {
                 override fun clickItem(habit: Habit) {
                     val bundle = Bundle().apply {
                         putSerializable(HABIT, habit)
                         putBoolean(EDIT_HABIT, true)
                     }
                     findNavController().navigate(R.id.createHabitFragment, bundle)
+                }
+            })
+
+            setOnItemClickListenerHabitDone(object : OnItemClickListener {
+                override fun clickItem(habit: Habit) {
+                    if (habit.id.uid != null) {
+                        val doneHabit = DoneHabit(habit.id.uid as String, habit.date)
+                        habitsViewModel.doneHabit(doneHabit)
+                    }
+                    Toast.makeText(context, "done habit", Toast.LENGTH_SHORT).show()
                 }
             })
 

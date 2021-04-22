@@ -26,7 +26,13 @@ class HabitJsonDeserializer: JsonDeserializer<Habit> {
                 json.asJsonObject?.get("color")?.asInt ?: 0,
                 json.asJsonObject?.get("date")?.asLong ?: 0
             )
+
             habit.id = HabitUid(json.asJsonObject?.get("uid")?.asString)
+            val doneDate = json.asJsonObject?.get("done_dates")?.asJsonArray
+
+            if (doneDate != null)
+                habit.doneDates = doneDate.map { date -> date.asLong }
+
             return habit
         } else {
             return Habit()

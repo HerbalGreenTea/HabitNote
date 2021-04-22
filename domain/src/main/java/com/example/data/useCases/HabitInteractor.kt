@@ -1,10 +1,6 @@
 package com.example.data.useCases
 
-import com.example.data.entities.Habit
-import com.example.data.entities.HabitUid
-import com.example.data.entities.PriorityHabit
-import com.example.data.entities.TypeFilter
-import com.example.data.entities.TypeHabit
+import com.example.data.entities.*
 import kotlinx.coroutines.flow.Flow
 
 class HabitInteractor(
@@ -15,8 +11,9 @@ class HabitInteractor(
     val readAllData: Flow<List<Habit>> = databaseHabits.readAllData()
 
     suspend fun loadData() {
-        val habits: List<Habit> = habitNetworkRepository.getHabits()
-        habits.forEach { databaseHabits.addHabit(it) }
+        habitNetworkRepository
+                .getHabits()
+                .forEach { databaseHabits.addHabit(it) }
     }
 
     suspend fun addHabit(habit: Habit) {
@@ -38,6 +35,10 @@ class HabitInteractor(
             habitNetworkRepository.deleteHabit(habit.id)
             databaseHabits.deleteHabit(habit)
         }
+    }
+
+    suspend fun doneHabit(doneHabit: DoneHabit) {
+        habitNetworkRepository.postHabit(doneHabit)
     }
 
     fun filter(habits: List<Habit>, type: TypeHabit, typeFilter: TypeFilter): List<Habit>{

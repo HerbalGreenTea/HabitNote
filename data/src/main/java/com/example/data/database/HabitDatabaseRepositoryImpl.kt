@@ -8,8 +8,6 @@ class HabitDatabaseRepositoryImpl(private val habitDao: HabitDao): HabitDatabase
 
     override fun readAllData(): Flow<List<Habit>> = habitDao.readAllData()
 
-    override suspend fun getAllHabit(): List<Habit> = habitDao.getHabits()
-
     override suspend fun addHabit(habit: Habit) = habitDao.addHabit(habit)
 
     override suspend fun updateHabit(habit: Habit) = habitDao.updateHabit(habit)

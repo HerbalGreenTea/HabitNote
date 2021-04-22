@@ -15,7 +15,8 @@ class ListHabitAdapter(
         private var habits: List<Habit> = listOf()
 ): RecyclerView.Adapter<ListHabitAdapter.HabitsViewHolder>() {
 
-    private var onItemClickListener: OnItemClickListener? = null
+    private var onItemClickListenerHabitEdit: OnItemClickListener? = null
+    private var onItemClickListenerHabitDone: OnItemClickListener? = null
 
     class HabitsViewHolder(inflater: LayoutInflater, parent: ViewGroup)
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.item_habit, parent, false)) {
@@ -60,9 +61,15 @@ class ListHabitAdapter(
         val habit = habits[position]
         holder.bind(habit)
 
-        if (onItemClickListener != null && position != RecyclerView.NO_POSITION) {
+        if (onItemClickListenerHabitEdit != null && position != RecyclerView.NO_POSITION) {
             holder.itemView.setOnClickListener {
-                (onItemClickListener as OnItemClickListener).clickItem(habit)
+                (onItemClickListenerHabitEdit as OnItemClickListener).clickItem(holder.getDataHabit())
+            }
+        }
+
+        if (onItemClickListenerHabitDone != null) {
+            holder.itemView.btn_habit_done.setOnClickListener {
+                (onItemClickListenerHabitDone as OnItemClickListener).clickItem(holder.getDataHabit())
             }
         }
     }
@@ -75,7 +82,11 @@ class ListHabitAdapter(
         diffUtil.dispatchUpdatesTo(this)
     }
 
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.onItemClickListener = onItemClickListener
+    fun setOnItemClickListenerHabitEdit(onItemClickListener: OnItemClickListener) {
+        this.onItemClickListenerHabitEdit = onItemClickListener
+    }
+
+    fun setOnItemClickListenerHabitDone(onItemClickListener: OnItemClickListener) {
+        this.onItemClickListenerHabitDone = onItemClickListener
     }
 }
