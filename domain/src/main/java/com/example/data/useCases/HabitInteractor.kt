@@ -1,7 +1,10 @@
 package com.example.data.useCases
 
 import com.example.data.entities.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import java.util.*
 
 class HabitInteractor(
     private val databaseHabits: HabitDatabaseRepository,
@@ -11,9 +14,8 @@ class HabitInteractor(
     val readAllData: Flow<List<Habit>> = databaseHabits.readAllData()
 
     suspend fun loadData() {
-        habitNetworkRepository
-                .getHabits()
-                .forEach { databaseHabits.addHabit(it) }
+        val habits = habitNetworkRepository.getHabits()
+        habits.forEach { databaseHabits.addHabit(it) }
     }
 
     suspend fun addHabit(habit: Habit) {
@@ -37,8 +39,38 @@ class HabitInteractor(
         }
     }
 
-    suspend fun doneHabit(doneHabit: DoneHabit) {
-        habitNetworkRepository.postHabit(doneHabit)
+    suspend fun doneHabit(
+            habit: Habit,
+            funShowGoodMessage: () -> Unit,
+            funShowBadMessage: () -> Unit) {
+        if (habit.id.uid != null) {
+            val doneHabit = DoneHabit(habit.id.uid as String, GregorianCalendar().time.time)
+            habit.doneDates.add(doneHabit.date)
+
+            habitNetworkRepository.postHabit(doneHabit)
+            databaseHabits.updateHabit(habit)
+
+            withContext(Dispatchers.Main) {
+                if (habit.doneDates.isNotEmpty()) {
+                    if (habit.type == TypeHabit.GOOD) showMessage(habit, funShowGoodMessage)
+                    else showMessage(habit, funShowBadMessage)
+                }
+            }
+        }
+    }
+
+    private fun showMessage(
+            habit: Habit,
+            funShowMessage: () -> Unit) {
+
+        val firstDate = GregorianCalendar()
+        firstDate.time = Date(habit.doneDates.first())
+        val currentDate = GregorianCalendar()
+        val habitFrequency = habit.frequency
+        val currentFrequency = firstDate.get(Calendar.DAY_OF_YEAR) - currentDate.get(Calendar.DAY_OF_YEAR)
+        val resFre = habitFrequency - currentFrequency
+
+        if (resFre >= 0) funShowMessage()
     }
 
     fun filter(habits: List<Habit>, type: TypeHabit, typeFilter: TypeFilter): List<Habit>{

@@ -24,5 +24,5 @@ data class Habit (
 ): Serializable {
     @PrimaryKey
     var id: HabitUid = HabitUid(null)
-    var doneDates: List<Long> = listOf()
+    var doneDates: MutableList<Long> = mutableListOf()
 }

@@ -1,7 +1,6 @@
 package com.example.habitnote.ViewModels
 
 import androidx.lifecycle.*
-import com.example.data.entities.DoneHabit
 import com.example.data.entities.Habit
 import com.example.data.entities.TypeFilter
 import com.example.data.entities.TypeHabit
@@ -54,14 +53,38 @@ class ListHabitViewModel @Inject constructor(
         }
     }
 
-    fun doneHabit(doneHabit: DoneHabit) {
+    fun doneHabit(habit: Habit, showToast: (message: String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            habitInteractor.doneHabit(doneHabit)
+            habitInteractor.doneHabit(habit,
+                    {messageDoneGoodHabit(habit.count, habit.doneDates.size) {m -> showToast(m) } },
+                    {messageDoneBadHabit(habit.count, habit.doneDates.size)  {m -> showToast(m) } })
         }
     }
 
     fun applyFilter(habits: List<Habit>, type: TypeHabit, typeFilter: TypeFilter): List<Habit> {
         return habitInteractor.filter(habits, type, typeFilter)
+    }
+
+    private fun messageDoneGoodHabit(
+            habitCount: Int,
+            countDoneDate: Int,
+            showToast: (message: String) -> Unit) {
+
+        if (habitCount > countDoneDate)
+            showToast("Стоит выполнить еще ${habitCount - countDoneDate} раз")
+        else
+            showToast("You are breathing")
+    }
+
+    private fun messageDoneBadHabit(
+            habitCount: Int,
+            countDoneDate: Int,
+            showToast: (message: String) -> Unit) {
+
+        if (habitCount > countDoneDate)
+            showToast("Можете выполнить еще ${habitCount - countDoneDate} раз")
+        else
+            showToast("Хватит это делать")
     }
 }
 

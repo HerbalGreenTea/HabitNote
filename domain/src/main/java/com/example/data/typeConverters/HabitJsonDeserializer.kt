@@ -27,11 +27,13 @@ class HabitJsonDeserializer: JsonDeserializer<Habit> {
                 json.asJsonObject?.get("date")?.asLong ?: 0
             )
 
+            // todo больше узнать о Gson и лучше его приготовить
+
             habit.id = HabitUid(json.asJsonObject?.get("uid")?.asString)
             val doneDate = json.asJsonObject?.get("done_dates")?.asJsonArray
 
             if (doneDate != null)
-                habit.doneDates = doneDate.map { date -> date.asLong }
+                habit.doneDates = doneDate.map { date -> date.asLong } as MutableList<Long>
 
             return habit
         } else {

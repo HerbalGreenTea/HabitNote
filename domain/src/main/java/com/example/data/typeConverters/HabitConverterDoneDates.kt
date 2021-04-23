@@ -6,16 +6,19 @@ class HabitConverterDoneDates {
 
     @TypeConverter
     fun fromDoneDate(doneDates: List<Long>): String {
-        return if (doneDates.isNotEmpty()) {
-            doneDates.map { it.toString() }
-                    .reduce { dates, date -> "${date}, $date" }
-        } else ""
+        var res = ""
+        if (doneDates.isNotEmpty()) {
+            res = doneDates.map { it.toString() }.joinToString(",") { it }
+        }
+        return res
     }
 
     @TypeConverter
-    fun toDoneDate(doneDate: String): List<Long> {
+    fun toDoneDate(doneDate: String): MutableList<Long> {
         return if (doneDate.isNotEmpty())
-            doneDate.split(",").map { it.toLong() }
-        else listOf()
+            doneDate.replace(" ", "")
+                    .split(",")
+                    .map { it.toLong() } as MutableList<Long>
+        else mutableListOf()
     }
 }
