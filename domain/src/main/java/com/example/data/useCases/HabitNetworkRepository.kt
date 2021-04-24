@@ -3,12 +3,13 @@ package com.example.data.useCases
 import com.example.data.entities.DoneHabit
 import com.example.data.entities.Habit
 import com.example.data.entities.HabitUid
+import retrofit2.Response
 
 interface HabitNetworkRepository {
 
-    suspend fun getHabits(): List<Habit>
+    suspend fun getHabits(): Response<List<Habit>>
 
-    suspend fun putHabit(habit: Habit): Habit
+    suspend fun putHabit(habit: Habit): Response<Habit>
 
     suspend fun postHabit(doneHabit: DoneHabit)
 

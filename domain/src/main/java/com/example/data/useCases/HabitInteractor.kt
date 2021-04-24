@@ -2,27 +2,39 @@ package com.example.data.useCases
 
 import com.example.data.entities.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import java.util.*
 
 class HabitInteractor(
     private val databaseHabits: HabitDatabaseRepository,
     private val habitNetworkRepository: HabitNetworkRepository
 ) {
+    companion object {
+        private const val TIMEOUT = 1000L
+    }
 
     val readAllData: Flow<List<Habit>> = databaseHabits.readAllData()
 
     suspend fun loadData() {
-        val habits = habitNetworkRepository.getHabits()
-        habits.forEach { databaseHabits.addHabit(it) }
+        performSuccess(
+            { habitNetworkRepository.getHabits() },
+            { habits -> habits.forEach{ databaseHabits.addHabit(it) } }
+        )
     }
 
     suspend fun addHabit(habit: Habit) {
-        val habitUid = habitNetworkRepository.putHabit(habit).id
-        habit.id = habitUid
-        if (habit.id.uid != null)
-            databaseHabits.addHabit(habit)
+        performSuccess(
+            { habitNetworkRepository.putHabit(habit) },
+            {
+                val prevUid = habit.id
+                habit.id = it.id
+                if (prevUid.uid == null) databaseHabits.addHabit(habit)
+                else databaseHabits.updateHabit(habit)
+            }
+        )
     }
 
     suspend fun updateHabit(habit: Habit) {
@@ -85,6 +97,31 @@ class HabitInteractor(
             TypeFilter.SORT_INCREASE_FREQUENCY -> filterHabits.sortedBy { it.frequency }
             TypeFilter.SORT_DECREASE_FREQUENCY -> filterHabits.sortedByDescending { it.frequency }
             TypeFilter.NONE -> filterHabits
+        }
+    }
+
+    private suspend fun <T> performSuccess(
+        responseGetter: suspend () -> Response<T>,
+        callback: suspend (T) -> Unit
+    ) {
+        while (true) {
+            try {
+                val response = responseGetter()
+                if (response.isSuccessful) {
+                    response.body()?.let { callback(it) }
+                    break
+                } else {
+                    if (response.code() >= 500) {
+                        delay(TIMEOUT)
+                    } else {
+                        break
+                    }
+                }
+            } catch (e: Exception) {
+                print(e)
+                break
+            }
+
         }
     }
 }
