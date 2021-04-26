@@ -121,7 +121,6 @@ class HabitInteractor(
                 print(e)
                 break
             }
-
         }
     }
 }

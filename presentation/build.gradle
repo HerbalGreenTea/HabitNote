@@ -76,4 +76,6 @@ dependencies {
 
     // Glide для загрузки картинок с интернета
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    androidTestImplementation 'com.kaspersky.android-components:kaspresso:1.1.0'
 }
