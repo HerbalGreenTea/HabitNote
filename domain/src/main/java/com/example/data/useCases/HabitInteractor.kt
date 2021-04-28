@@ -51,43 +51,40 @@ class HabitInteractor(
         }
     }
 
-    suspend fun doneHabit(
-            habit: Habit,
-            funShowGoodMessage: () -> Unit,
-            funShowBadMessage: () -> Unit) {
+    private suspend fun sendDoneHabit(habit: Habit, frequency: Int) {
         if (habit.id.uid != null) {
             val doneHabit = DoneHabit(habit.id.uid as String, GregorianCalendar().time.time)
 
-            val newDoneDates = mutableListOf(doneHabit.date).apply {
-                addAll(habit.doneDates)
-            }
-
-            habit.doneDates = newDoneDates
+            habit.doneDates =
+                    if (frequency >= 0)
+                        mutableListOf(doneHabit.date).apply { addAll(habit.doneDates) }
+                    else
+                        listOf()
 
             habitNetworkRepository.postHabit(doneHabit)
             databaseHabits.updateHabit(habit)
-
-            withContext(Dispatchers.Main) {
-                if (habit.doneDates.isNotEmpty()) {
-                    if (habit.type == TypeHabit.GOOD) showMessage(habit, funShowGoodMessage)
-                    else showMessage(habit, funShowBadMessage)
-                }
-            }
         }
     }
 
-    private fun showMessage(
-            habit: Habit,
-            funShowMessage: () -> Unit) {
+    suspend fun doneHabit(habit: Habit,
+                     funShowMessage1: (habit: Habit) -> Unit,
+                     funShowMessage2: (habit: Habit) -> Unit) {
 
-        val firstDate = GregorianCalendar()
-        firstDate.time = Date(habit.doneDates.first())
-        val currentDate = GregorianCalendar()
-        val habitFrequency = habit.frequency
-        val currentFrequency = firstDate.get(Calendar.DAY_OF_YEAR) - currentDate.get(Calendar.DAY_OF_YEAR)
-        val resFre = habitFrequency - currentFrequency
+        val firstDate = GregorianCalendar().apply {
+            time = if (habit.doneDates.isNotEmpty()) Date(habit.doneDates.first())
+            else Date(habit.date)
+        }
+        val dayFirst = firstDate.get(Calendar.DAY_OF_YEAR)
+        val dayLast = GregorianCalendar().get(Calendar.DAY_OF_YEAR)
 
-        if (resFre >= 0) funShowMessage()
+        val frequency = habit.frequency - Math.abs(dayLast - dayFirst)
+
+        sendDoneHabit(habit, frequency)
+
+        withContext(Dispatchers.Main) {
+            if (frequency >= 0) funShowMessage1(habit)
+            else funShowMessage2(habit)
+        }
     }
 
     fun filter(habits: List<Habit>, type: TypeHabit, typeFilter: TypeFilter): List<Habit>{

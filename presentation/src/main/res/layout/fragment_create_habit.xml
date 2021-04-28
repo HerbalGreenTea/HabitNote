@@ -27,7 +27,7 @@
         android:id="@+id/create_habit_color"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@color/royalPurple"
+        android:background="@color/colorLightGray"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:hint="@string/habit_count"
-        android:maxLength="5"
+        android:maxLength="3"
         android:background="@drawable/background_field_input_text"
         android:inputType="number"
         android:layout_marginTop="15dp"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:hint="@string/habit_frequency"
-        android:maxLength="5"
+        android:maxLength="3"
         android:background="@drawable/background_field_input_text"
         android:inputType="number"
         android:layout_marginTop="15dp"
@@ -85,7 +85,7 @@
             android:layout_weight="1"
             android:text="@string/habit_type_good"
             android:checked="true"
-            android:buttonTint="@color/royalPurple"
+            android:buttonTint="@color/black"
             android:layout_margin="10dp"/>
 
         <RadioButton
@@ -94,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/habit_type_bad"
-            android:buttonTint="@color/royalPurple"
+            android:buttonTint="@color/black"
             android:layout_margin="10dp"/>
 
     </RadioGroup>
@@ -127,6 +127,7 @@
         app:layout_constraintBottom_toBottomOf="@id/create_priority_habit"/>
 
     <Button
+        style="?android:attr/borderlessButtonStyle"
         android:id="@+id/btn_create_habit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

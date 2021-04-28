@@ -32,26 +32,29 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/btn_filter_priority_low"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/habit_priority_low"
+            android:text="@string/filter_text_priority_low"
             android:background="@drawable/background_field_input_text"/>
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/btn_filter_priority_mid"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/habit_priority_mid"
+            android:text="@string/filter_text_priority_mid"
             android:background="@drawable/background_field_input_text"/>
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/btn_filter_priority_high"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/habit_priority_high"
+            android:text="@string/filter_text_priority_high"
             android:background="@drawable/background_field_input_text"/>
 
     </RadioGroup>
@@ -68,6 +71,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
+        style="?android:attr/borderlessButtonStyle"
         android:id="@+id/btn_sort_increase_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,6 +84,7 @@
         android:background="@drawable/background_field_input_text"/>
 
     <Button
+        style="?android:attr/borderlessButtonStyle"
         android:id="@+id/btn_sort_decrease_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,13 +101,14 @@
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/filter_text_sort_count"
+        android:text="@string/filter_text_sort_frequency"
         style="@style/edit_text_field_create_habit"
         app:layout_constraintTop_toBottomOf="@id/btn_sort_increase_count"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
+        style="?android:attr/borderlessButtonStyle"
         android:id="@+id/btn_sort_increase_frequency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -115,6 +121,7 @@
         android:background="@drawable/background_field_input_text"/>
 
     <Button
+        style="?android:attr/borderlessButtonStyle"
         android:id="@+id/btn_sort_decrease_frequency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -127,6 +134,7 @@
         android:background="@drawable/background_field_input_text"/>
 
     <Button
+        style="?android:attr/borderlessButtonStyle"
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

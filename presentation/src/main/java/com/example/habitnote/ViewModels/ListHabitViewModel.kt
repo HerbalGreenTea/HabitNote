@@ -53,38 +53,16 @@ class ListHabitViewModel @Inject constructor(
         }
     }
 
-    fun doneHabit(habit: Habit, showToast: (message: String) -> Unit) {
+    fun doneHabit(habit: Habit,
+                  showMessage1: (habit: Habit) -> Unit,
+                  showMessage2: (habit: Habit) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            habitInteractor.doneHabit(habit,
-                    {messageDoneGoodHabit(habit.count, habit.doneDates.size) {m -> showToast(m) } },
-                    {messageDoneBadHabit(habit.count, habit.doneDates.size)  {m -> showToast(m) } })
+            habitInteractor.doneHabit(habit, {h -> showMessage1(h) }, {h -> showMessage2(h) })
         }
     }
 
     fun applyFilter(habits: List<Habit>, type: TypeHabit, typeFilter: TypeFilter): List<Habit> {
         return habitInteractor.filter(habits, type, typeFilter)
-    }
-
-    private fun messageDoneGoodHabit(
-            habitCount: Int,
-            countDoneDate: Int,
-            showToast: (message: String) -> Unit) {
-
-        if (habitCount > countDoneDate)
-            showToast("Стоит выполнить еще ${habitCount - countDoneDate} раз")
-        else
-            showToast("You are breathing")
-    }
-
-    private fun messageDoneBadHabit(
-            habitCount: Int,
-            countDoneDate: Int,
-            showToast: (message: String) -> Unit) {
-
-        if (habitCount > countDoneDate)
-            showToast("Можете выполнить еще ${habitCount - countDoneDate} раз")
-        else
-            showToast("Хватит это делать")
     }
 }
 

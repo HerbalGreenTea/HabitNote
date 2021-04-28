@@ -92,7 +92,7 @@ class HabitListFragment : Fragment() {
 
             setOnItemClickListenerHabitDone(object : OnItemClickListener {
                 override fun clickItem(habit: Habit) {
-                    habitsViewModel.doneHabit(habit) {m -> showToast(m)}
+                    habitsViewModel.doneHabit(habit, {h -> showMessage1(h) }, {h -> showMessage2(h)} )
                 }
             })
 
@@ -115,5 +115,44 @@ class HabitListFragment : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showMessage1(habit: Habit) {
+
+        when(habit.type) {
+            TypeHabit.GOOD -> {
+                if (habit.count > habit.doneDates.size)
+                    showToast("Стоит выполнить еще ${habit.count - habit.doneDates.size} раз")
+                else
+                    showToast("You are breathing")
+            }
+
+            TypeHabit.BAD -> {
+                if (habit.count > habit.doneDates.size)
+                    showToast("Можете выполнить еще ${habit.count - habit.doneDates.size} раз")
+                else
+                    showToast("Хватит это делать")
+            }
+        }
+    }
+
+    private fun showMessage2(habit: Habit) {
+
+        when(habit.type) {
+
+            TypeHabit.GOOD -> {
+                if (habit.count > habit.doneDates.size)
+                    showToast("Почти получилось дойти до цели, попробуйте снова")
+                else
+                    showToast("так держать, вы дошли цель")
+            }
+
+            TypeHabit.BAD -> {
+                if (habit.count > habit.doneDates.size)
+                    showToast("Отлично, вы выполнили меньше, чем можно")
+                else
+                    showToast("Лимит достигнут")
+            }
+        }
     }
 }
