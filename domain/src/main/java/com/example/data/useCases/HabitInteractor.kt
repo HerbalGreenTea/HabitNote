@@ -57,7 +57,12 @@ class HabitInteractor(
             funShowBadMessage: () -> Unit) {
         if (habit.id.uid != null) {
             val doneHabit = DoneHabit(habit.id.uid as String, GregorianCalendar().time.time)
-            habit.doneDates.add(doneHabit.date)
+
+            val newDoneDates = mutableListOf(doneHabit.date).apply {
+                addAll(habit.doneDates)
+            }
+
+            habit.doneDates = newDoneDates
 
             habitNetworkRepository.postHabit(doneHabit)
             databaseHabits.updateHabit(habit)

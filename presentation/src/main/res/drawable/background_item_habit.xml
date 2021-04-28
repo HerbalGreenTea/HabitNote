@@ -7,7 +7,7 @@
                 android:topRightRadius="30dp"
                 android:bottomRightRadius="30dp"/>
             <stroke
-                android:color="@color/vividSkyBlue"
+                android:color="@color/colorLightGray"
                 android:width="2dp"/>
         </shape>
     </item>

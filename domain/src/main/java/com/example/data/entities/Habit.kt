@@ -20,9 +20,9 @@ data class Habit (
     var frequency: Int = 0,
     var count: Int = 0,
     var color: Int = 0,
-    var date: Long = 0
+    var date: Long = 0,
+    var doneDates: List<Long> = listOf()
 ): Serializable {
     @PrimaryKey
     var id: HabitUid = HabitUid(null)
-    var doneDates: MutableList<Long> = mutableListOf()
 }

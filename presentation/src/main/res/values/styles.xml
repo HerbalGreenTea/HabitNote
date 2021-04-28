@@ -10,7 +10,7 @@
 
     <style name="tv_item_habit">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/electricPurple</item>
+        <item name="android:textColor">@color/colorLightGray</item>
     </style>
 
     <style name="edit_text_field_create_habit">

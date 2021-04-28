@@ -18,7 +18,6 @@ class FragmentHabitListScreen: Screen<FragmentHabitListScreen>() {
         val title = KTextView(parent) { R.id.habit_title }
         val count = KTextView(parent) { R.id.habit_count }
         val frequency = KTextView(parent) { R.id.habit_frequency }
-        val typeHabit = KTextView(parent) { R.id.habit_type }
         val priorityHabit = KTextView(parent) { R.id.habit_priority }
     }
 

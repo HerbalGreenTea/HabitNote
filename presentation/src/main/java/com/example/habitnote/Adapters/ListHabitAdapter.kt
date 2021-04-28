@@ -6,17 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.entities.Habit
 import com.example.data.entities.PriorityHabit
-import com.example.data.entities.TypeHabit
 import com.example.data.useCases.OnItemClickListener
 import com.example.habitnote.R
 import kotlinx.android.synthetic.main.item_habit.view.*
 
 class ListHabitAdapter(
-        private var habits: List<Habit> = listOf()
+        private var habits: List<Habit> = listOf(),
+        private var onItemClickListenerHabitEdit: OnItemClickListener? = null,
+        private var onItemClickListenerHabitDone: OnItemClickListener? = null
 ): RecyclerView.Adapter<ListHabitAdapter.HabitsViewHolder>() {
-
-    private var onItemClickListenerHabitEdit: OnItemClickListener? = null
-    private var onItemClickListenerHabitDone: OnItemClickListener? = null
 
     class HabitsViewHolder(inflater: LayoutInflater, parent: ViewGroup)
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.item_habit, parent, false)) {
@@ -26,18 +24,25 @@ class ListHabitAdapter(
         fun getDataHabit(): Habit = dataHabit
 
         fun bind(habit: Habit) {
-            dataHabit = habit
+            // данные привычки не привзяанные ссылкой к habits для более корректной работы DiffUtil
+            dataHabit = Habit(
+                    habit.title,
+                    habit.description,
+                    habit.priority,
+                    habit.type,
+                    habit.frequency,
+                    habit.count,
+                    habit.color,
+                    habit.date,
+                    habit.doneDates
+            )
+            dataHabit.id = habit.id
 
             itemView.apply {
-                habit_title.text = habit.title
-                habit_title.setTextColor(habit.color)
+                body_habit.habit_title.text = habit.title
+                body_habit.habit_title.setTextColor(habit.color)
 
-                habit_type.setText(
-                        if (habit.type == TypeHabit.GOOD) R.string.habit_type_good
-                        else R.string.habit_type_bad
-                )
-
-                habit_priority.setText(
+                body_habit.habit_priority.setText(
                         when (habit.priority) {
                             PriorityHabit.LOW -> R.string.habit_priority_low
                             PriorityHabit.MID -> R.string.habit_priority_mid
@@ -45,8 +50,8 @@ class ListHabitAdapter(
                         }
                 )
 
-                habit_count.text = habit.count.toString()
-                habit_frequency.text = habit.frequency.toString()
+                body_habit.habit_frequency.text = "период: ${habit.frequency} дней"
+                info_count.habit_count.text = "${habit.doneDates.size} / ${habit.count}"
                 habit_color.setBackgroundColor(habit.color)
             }
         }
@@ -62,13 +67,13 @@ class ListHabitAdapter(
         holder.bind(habit)
 
         if (onItemClickListenerHabitEdit != null && position != RecyclerView.NO_POSITION) {
-            holder.itemView.setOnClickListener {
+            holder.itemView.body_habit.setOnClickListener {
                 (onItemClickListenerHabitEdit as OnItemClickListener).clickItem(holder.getDataHabit())
             }
         }
 
         if (onItemClickListenerHabitDone != null) {
-            holder.itemView.btn_habit_done.setOnClickListener {
+            holder.itemView.info_count.btn_done_habit.setOnClickListener {
                 (onItemClickListenerHabitDone as OnItemClickListener).clickItem(holder.getDataHabit())
             }
         }

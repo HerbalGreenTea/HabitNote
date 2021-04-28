@@ -17,9 +17,9 @@
 
     <string name="toast_empty_field_create_habit">заполните поля названия, повторений и переодичиности привычки</string>
 
-    <string name="habit_priority_low">низкий</string>
-    <string name="habit_priority_mid">средний</string>
-    <string name="habit_priority_high">высокий</string>
+    <string name="habit_priority_low">низкий приоритет</string>
+    <string name="habit_priority_mid">средний приоритет</string>
+    <string name="habit_priority_high">высокий приоритет</string>
 
     <string name="text_day">дня</string>
     <string name="text_days">дней</string>
