@@ -67,8 +67,8 @@ class HabitInteractor(
     }
 
     suspend fun doneHabit(habit: Habit,
-                     funShowMessage1: (habit: Habit) -> Unit,
-                     funShowMessage2: (habit: Habit) -> Unit) {
+                     funShowMessage1: () -> Unit,
+                     funShowMessage2: () -> Unit) {
 
         val firstDate = GregorianCalendar().apply {
             time = if (habit.doneDates.isNotEmpty()) Date(habit.doneDates.first())
@@ -82,8 +82,8 @@ class HabitInteractor(
         sendDoneHabit(habit, frequency)
 
         withContext(Dispatchers.Main) {
-            if (frequency >= 0) funShowMessage1(habit)
-            else funShowMessage2(habit)
+            if (frequency >= 0) funShowMessage1()
+            else funShowMessage2()
         }
     }
 

@@ -92,7 +92,24 @@ class HabitListFragment : Fragment() {
 
             setOnItemClickListenerHabitDone(object : OnItemClickListener {
                 override fun clickItem(habit: Habit) {
-                    habitsViewModel.doneHabit(habit, {h -> showMessage1(h) }, {h -> showMessage2(h)} )
+                    val showMessage1 = { showMessage(habit,
+                            "Стоит выполнить еще ${habit.count - habit.doneDates.size} раз",
+                            "You are breathing",
+                            "Можете выполнить еще ${habit.count - habit.doneDates.size} раз",
+                            "Хватит это делать"
+
+                    ) }
+
+                    val showMessage2 = {
+                        showMessage(habit,
+                                "Почти получилось дойти до цели, попробуйте снова",
+                                "так держать, вы дошли цель",
+                                "Отлично, вы выполнили меньше, чем можно",
+                                "Лимит достигнут"
+                        )
+                    }
+
+                    habitsViewModel.doneHabit(habit, { showMessage1() }, { showMessage2() } )
                 }
             })
 
@@ -117,43 +134,16 @@ class HabitListFragment : Fragment() {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    // todo сделать showMessage1 и showMessage2 одной удобной функцией
-
-    private fun showMessage1(habit: Habit) {
-
+    private fun showMessage(habit: Habit, str1: String, str2: String, str3: String, str4: String) {
         when(habit.type) {
             TypeHabit.GOOD -> {
-                if (habit.count > habit.doneDates.size)
-                    showToast("Стоит выполнить еще ${habit.count - habit.doneDates.size} раз")
-                else
-                    showToast("You are breathing")
+                if (habit.count > habit.doneDates.size) showToast(str1)
+                else showToast(str2)
             }
 
             TypeHabit.BAD -> {
-                if (habit.count > habit.doneDates.size)
-                    showToast("Можете выполнить еще ${habit.count - habit.doneDates.size} раз")
-                else
-                    showToast("Хватит это делать")
-            }
-        }
-    }
-
-    private fun showMessage2(habit: Habit) {
-
-        when(habit.type) {
-
-            TypeHabit.GOOD -> {
-                if (habit.count > habit.doneDates.size)
-                    showToast("Почти получилось дойти до цели, попробуйте снова")
-                else
-                    showToast("так держать, вы дошли цель")
-            }
-
-            TypeHabit.BAD -> {
-                if (habit.count > habit.doneDates.size)
-                    showToast("Отлично, вы выполнили меньше, чем можно")
-                else
-                    showToast("Лимит достигнут")
+                if (habit.count > habit.doneDates.size) showToast(str3)
+                else showToast(str4)
             }
         }
     }

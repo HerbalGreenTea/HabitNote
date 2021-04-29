@@ -53,10 +53,10 @@ class ListHabitViewModel @Inject constructor(
     }
 
     fun doneHabit(habit: Habit,
-                  showMessage1: (habit: Habit) -> Unit,
-                  showMessage2: (habit: Habit) -> Unit) {
+                  showMessage1: () -> Unit,
+                  showMessage2: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            habitInteractor.doneHabit(habit, {h -> showMessage1(h) }, {h -> showMessage2(h) })
+            habitInteractor.doneHabit(habit, { showMessage1() }, { showMessage2() })
         }
     }
 
