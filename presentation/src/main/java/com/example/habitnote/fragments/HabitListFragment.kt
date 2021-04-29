@@ -117,6 +117,8 @@ class HabitListFragment : Fragment() {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    // todo сделать showMessage1 и showMessage2 одной удобной функцией
+
     private fun showMessage1(habit: Habit) {
 
         when(habit.type) {

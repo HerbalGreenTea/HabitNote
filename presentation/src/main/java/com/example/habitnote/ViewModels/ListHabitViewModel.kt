@@ -11,8 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ListHabitViewModel @Inject constructor(
-    private val habitInteractor: HabitInteractor
-    ): ViewModel() {
+        private val habitInteractor: HabitInteractor): ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

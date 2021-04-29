@@ -77,5 +77,10 @@ dependencies {
     // Glide для загрузки картинок с интернета
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
+    // Kaspresso для UI тестов
     androidTestImplementation 'com.kaspersky.android-components:kaspresso:1.1.0'
+
+    // Mockito для unit тестов
+    testImplementation "org.mockito:mockito-core:3.0.0"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 }

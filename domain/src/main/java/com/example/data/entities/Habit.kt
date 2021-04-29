@@ -21,7 +21,7 @@ data class Habit (
     var count: Int = 0,
     var color: Int = 0,
     var date: Long = 0,
-    var doneDates: List<Long> = listOf()
+    var doneDates: List<Long> = listOf() // todo сделать список дат, а не лонгов
 ): Serializable {
     @PrimaryKey
     var id: HabitUid = HabitUid(null)
