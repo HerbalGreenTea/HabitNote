@@ -71,12 +71,12 @@ class HabitListFragment : Fragment() {
             }
 
             habitsViewModel.actionFilter.observe(viewLifecycleOwner) {
-                val habits = habitsViewModel.readAllData.value
+                val habits = habitsViewModel.readAllDataHabits.value
                 if (habits != null)
                     updateList(habitsViewModel.applyFilter(habits, type, it))
             }
 
-            habitsViewModel.readAllData.observe(viewLifecycleOwner) {
+            habitsViewModel.readAllDataHabits.observe(viewLifecycleOwner) {
                 updateList(habitsViewModel.applyFilter(it, type, TypeFilter.NONE))
             }
 

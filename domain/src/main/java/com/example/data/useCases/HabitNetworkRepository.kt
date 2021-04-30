@@ -7,9 +7,9 @@ import retrofit2.Response
 
 interface HabitNetworkRepository {
 
-    suspend fun getHabits(): Response<List<Habit>>
+    suspend fun getHabits(): List<Habit>?
 
-    suspend fun putHabit(habit: Habit): Response<Habit>
+    suspend fun putHabit(habit: Habit): Habit?
 
     suspend fun postHabit(doneHabit: DoneHabit)
 

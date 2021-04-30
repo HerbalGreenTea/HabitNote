@@ -16,6 +16,8 @@ class ViewModelListHabitModule {
         habitInteractor: HabitInteractor,
         activity: FragmentActivity): ListHabitViewModel {
 
+        // todo исправить на baseFragment
+
         @Suppress("UNCHECKED_CAST")
         return ViewModelProvider(activity, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {

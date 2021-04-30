@@ -8,18 +8,17 @@ import com.example.data.useCases.Event
 import com.example.data.useCases.HabitInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ListHabitViewModel @Inject constructor(
         private val habitInteractor: HabitInteractor): ViewModel() {
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            habitInteractor.loadData()
-        }
-    }
+    var readAllDataHabits: LiveData<List<Habit>> = habitInteractor.readAllDataHabits().asLiveData()
 
-    val readAllData: LiveData<List<Habit>> = habitInteractor.readAllData.asLiveData()
+    init {
+        viewModelScope.launch { habitInteractor.loadData() }
+    }
 
     private val mutableActionFilter: MutableLiveData<TypeFilter> = MutableLiveData()
     val actionFilter: LiveData<TypeFilter> = mutableActionFilter
@@ -31,24 +30,18 @@ class ListHabitViewModel @Inject constructor(
     fun addHabit(eventHabit: Event<Habit>) {
         val habit = eventHabit.getContentIfNotHandled()
         if (habit != null) {
-            viewModelScope.launch(Dispatchers.IO) {
-                habitInteractor.addHabit(habit)
-            }
+            viewModelScope.launch { habitInteractor.addHabit(habit) }
         }
     }
 
     fun deleteHabit(habit: Habit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            habitInteractor.deleteHabit(habit)
-        }
+        viewModelScope.launch { habitInteractor.deleteHabit(habit) }
     }
 
     fun updateHabit(eventHabit: Event<Habit>) {
         val habit = eventHabit.getContentIfNotHandled()
         if (habit != null) {
-            viewModelScope.launch(Dispatchers.IO) {
-                habitInteractor.updateHabit(habit)
-            }
+            viewModelScope.launch { habitInteractor.updateHabit(habit) }
         }
     }
 
@@ -56,7 +49,12 @@ class ListHabitViewModel @Inject constructor(
                   showMessage1: () -> Unit,
                   showMessage2: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            habitInteractor.doneHabit(habit, { showMessage1() }, { showMessage2() })
+            val frequency = habitInteractor.doneHabit(habit)
+
+            withContext(Dispatchers.Main) {
+                if (frequency >= 0) showMessage1()
+                else showMessage2()
+            }
         }
     }
 
