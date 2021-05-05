@@ -12,5 +12,4 @@ class PagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity) {
 
     override fun createFragment(position: Int): Fragment =
             HabitListFragment.newInstance(TypeHabit.getTypeAtCode(position))
-
 }
