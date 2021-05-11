@@ -83,4 +83,11 @@ dependencies {
     // Mockito для unit тестов
     testImplementation "org.mockito:mockito-core:3.0.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+
+    // Mockito for unit tests
+    testImplementation 'org.mockito:mockito-core:3.0.0'
+    // Mockito for Android tests
+    androidTestImplementation 'org.mockito:mockito-android:2.24.5'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
 }

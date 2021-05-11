@@ -8,10 +8,32 @@ import com.example.data.useCases.HabitDatabaseRepository
 import com.example.data.useCases.HabitInteractor
 import com.example.data.useCases.HabitNetworkRepository
 import com.nhaarman.mockitokotlin2.mock
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.Assert.*
+import java.util.*
 
 class HabitInteractorTest {
+
+    @Test
+    fun calculateDate() = runBlocking {
+        val mockHabitDatabaseRepository: HabitDatabaseRepository = mock()
+        val mockHabitNetworkRepository: HabitNetworkRepository = mock()
+
+        val habitInteractor = HabitInteractor(
+            mockHabitDatabaseRepository,
+            mockHabitNetworkRepository
+        )
+
+        val date1 = GregorianCalendar().apply { add(Calendar.DATE, -2) }
+        val date2 = GregorianCalendar()
+
+        val habit = Habit(frequency = 4, date = date1.time.time)
+
+        assertEquals(2, habitInteractor.doneHabit(habit))
+        habit.date = date2.time.time
+        assertEquals(4, habitInteractor.doneHabit(habit))
+    }
 
     @Test
     fun filter() {
@@ -40,6 +62,8 @@ class HabitInteractorTest {
         val resHabits5 = goodHabit.sortedByDescending { it.count }
         val resHabits6 = goodHabit.sortedBy { it.frequency }
         val resHabits7 = goodHabit.sortedByDescending { it.frequency }
+
+        // FIXME: 06.05.21 объявлять без логики, просто перечислять
 
         assertEquals(resHabits1, habitInteractor.filter(habits, TypeHabit.GOOD, TypeFilter.PRIORITY_LOW))
         assertEquals(resHabits2, habitInteractor.filter(habits, TypeHabit.GOOD, TypeFilter.PRIORITY_MID))

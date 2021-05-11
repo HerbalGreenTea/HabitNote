@@ -1,9 +1,11 @@
-package com.example.data.database
+package com.example.data
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.data.database.HabitDao
+import com.example.data.database.HabitDatabase
 import com.example.data.entities.Habit
 import com.example.data.entities.HabitUid
 import com.example.data.entities.PriorityHabit

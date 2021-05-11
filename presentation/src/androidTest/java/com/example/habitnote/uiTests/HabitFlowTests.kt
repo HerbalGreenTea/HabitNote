@@ -1,4 +1,4 @@
-package com.example.habitnote.tests
+package com.example.habitnote.uiTests
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -38,6 +38,8 @@ class HabitFlowTests: TestCase() {
     @Test
     fun editGoodHabit() = before {
     }.after {
+        // FIXME: 06.05.21 удалять привычки тут
+        // FIXME: 06.05.21 androidx оркестратор
     }.run {
 
         scenario(ScenarioCreateGoodHabit())
@@ -72,9 +74,7 @@ class HabitFlowTests: TestCase() {
 
         step("изменить тип привычки") {
             FragmentCreateHabitScreen {
-                btnSelectTypeHabitBad.isClickable()
                 btnSelectTypeHabitBad.click()
-                btnCreateHabit.isClickable()
                 btnCreateHabit.click()
             }
         }
